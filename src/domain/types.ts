@@ -42,6 +42,12 @@ export interface AppSettings {
   reminderHour: number;
   reminderMinute: number;
   /**
+   * 是否已经向系统要过一次通知权限。
+   * 要过就不再主动弹第二次（系统弹窗只该由用户开启开关这一动作触发），
+   * 被拒后设置页只给说明与「去系统设置」的入口，见 `lib/reminder`。
+   */
+  reminderAsked: boolean;
+  /**
    * 使用数据统计（NFR-6 埋点的用户开关）：记录本机的页面、点击与停留时长，
    * 不采集文本内容；关掉后立即停止采集，已有数据可在「数据统计」页清空。
    */
@@ -334,6 +340,12 @@ export interface PersistedState {
   levelId: string;
   /** 打卡与练习聚合，key 为 YYYY-MM-DD */
   daily: Record<string, DailyStat>;
+  /**
+   * 补签记录：key = 被补签的日期（YYYY-MM-DD），value = 补签时间戳。
+   * 与 `daily` 分开存是刻意的 —— `daily` 是作答明细的派生物（DR-3），
+   * 补签只是「这一天算签到」的事实，不能伪造时长与任务数。
+   */
+  makeups: Record<string, number>;
   attempts: Attempt[];
   /** 收藏的单词（每条归属一个收藏夹，见 folderId） */
   favorites: FavoriteItem[];

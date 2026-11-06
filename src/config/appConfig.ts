@@ -20,6 +20,16 @@ export interface AppConfig {
     taskThresholdOptions: number[];
     /** 跨天以用户所在时区的自然日零点为界 */
     dayBoundaryTimezone: 'device';
+    /**
+     * 补签（FR-E-1 的延伸）：练习日历里把某个漏掉的历史日期补记成「达标」。
+     * 只补签到记录，不补时长与任务数 —— 统计口径仍以作答明细为准（DR-3）。
+     */
+    makeup: {
+      /** 每个自然周（周一为起点）最多补签几天。当前只给 1 次免费额度，付费额度留待二期 */
+      perWeek: number;
+      /** 可补签的回溯窗口（天）：今天之前多少天内才允许补签 */
+      windowDays: number;
+    };
   };
   /** 练习行为参数 */
   exercise: {
@@ -116,6 +126,11 @@ export interface AppConfig {
     defaultMinute: number;
     /** 当天已达标则不发 */
     skipWhenQualified: boolean;
+    /**
+     * 一次排几天：本机通知只能定好「某天某时」再等系统触发，触发时无法再判断当天是否达标，
+     * 所以每天只排未来这几天，回到前台 / 达标 / 改设置时重排（达标的那天会被撤掉）。
+     */
+    scheduleDays: number;
   };
   /** 本地化（NFR-8） */
   i18n: {
@@ -243,6 +258,10 @@ export const appConfig: AppConfig = {
     defaultTaskThreshold: 5,
     taskThresholdOptions: [5, 10, 15, 20, 25, 30, 40, 50],
     dayBoundaryTimezone: 'device',
+    makeup: {
+      perWeek: 1,
+      windowDays: 30,
+    },
   },
   exercise: {
     dictationSetSize: 10,
@@ -304,6 +323,7 @@ export const appConfig: AppConfig = {
     defaultHour: 8,
     defaultMinute: 0,
     skipWhenQualified: true,
+    scheduleDays: 7,
   },
   i18n: {
     defaultLocale: 'en',

@@ -17,6 +17,12 @@ import {
 import { appConfig } from '@/config/appConfig';
 import { aiCacheBytes, clearAiCache } from '@/data/aiExplore';
 import { tr, trf } from '@/i18n';
+import {
+  getReminderPermission,
+  openSystemSettings,
+  requestReminderPermission,
+} from '@/lib/reminder';
+import { useReminderPermission } from '@/lib/useReminder';
 import { useFocusPlaceholder } from '@/lib/focusPlaceholder';
 import { inputFont } from '@/theme/fonts';
 import { FONT_SCALE_LABELS, layout, opacity, stroke } from '@/theme/tokens';
@@ -50,6 +56,44 @@ export default function SettingsScreen() {
     }
     setTimeDraft(null);
   };
+
+  /** 系统通知权限：进页面读一次、回前台再读一次（用户可能刚去系统设置里改过） */
+  const { permission, refresh: refreshPermission } = useReminderPermission();
+  /** 正在等系统弹窗 / 读权限：期间开关不再响应，避免连点弹出多次 */
+  const [reminderBusy, setReminderBusy] = useState(false);
+
+  /**
+   * 开启提醒：**只有这一次**会触发系统权限弹窗。
+   * 已经问过（`reminderAsked`）就只读状态、不再请求 —— 这就是「不反复弹窗」。
+   */
+  const toggleReminder = async (next: boolean) => {
+    if (!next) {
+      actions.updateSettings({ reminderEnabled: false });
+      return;
+    }
+    setReminderBusy(true);
+    try {
+      const granted = s.reminderAsked
+        ? await getReminderPermission()
+        : await requestReminderPermission();
+      actions.updateSettings({ reminderEnabled: granted === 'granted', reminderAsked: true });
+      refreshPermission();
+    } finally {
+      setReminderBusy(false);
+    }
+  };
+
+  /**
+   * 权限在系统设置里被关掉时，把开关一起关掉：
+   * 否则会出现「界面显示已开启、实际一条也收不到」的谎报。
+   * 只在「开着 + 没权限」时写一次，写完开关就是关的，不再进入这里。
+   */
+  useEffect(() => {
+    if (!s.reminderEnabled) return;
+    if (permission === 'denied' || permission === 'unsupported') {
+      actions.updateSettings({ reminderEnabled: false });
+    }
+  }, [permission, s.reminderEnabled, actions]);
 
   /** 键盘弹出后把时间输入框滚到键盘上方，避免被遮挡（键盘动画结束后再补一次） */
   const keepTimeInputVisible = () => {
@@ -175,8 +219,9 @@ export default function SettingsScreen() {
             </View>
             <Toggle
               value={s.reminderEnabled}
-              onValueChange={(v) => actions.updateSettings({ reminderEnabled: v })}
+              onValueChange={(v) => void toggleReminder(v)}
               accessibilityLabel={tr('每日练习通知')}
+              disabled={reminderBusy}
             />
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -231,6 +276,27 @@ export default function SettingsScreen() {
               />
             </View>
           </View>
+
+          {/* 权限被拒 / 平台不支持时给说明，不再弹第二次系统弹窗；
+              唯一的出路是去系统设置里打开，所以这里只放一个入口按钮 */}
+          {permission === 'denied' || permission === 'unsupported' ? (
+            <View style={{ gap: 10 }}>
+              <AppText kind="micro" color={theme.colors.textMuted}>
+                {permission === 'unsupported'
+                  ? tr('网页版不支持本地通知，请在手机 App 中开启。')
+                  : tr('系统通知权限已关闭，开关打开也收不到提醒。在系统设置里允许通知后，这里的开关就能重新打开。')}
+              </AppText>
+              {permission === 'denied' ? (
+                <PrimaryButton
+                  label="去系统设置"
+                  tone="ghost"
+                  onPress={() => {
+                    openSystemSettings();
+                  }}
+                />
+              ) : null}
+            </View>
+          ) : null}
         </Card>
       </View>
 

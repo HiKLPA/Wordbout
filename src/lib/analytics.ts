@@ -216,6 +216,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   about: '关于',
   onboarding: '引导页',
   analytics: '数据统计',
+  'practice-calendar': '练习日历',
 };
 
 export function screenLabelOf(pathname: string): string {

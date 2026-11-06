@@ -237,6 +237,49 @@ export const enStudy: Record<string, Entry> = {
   '当前水平：按所选统计时段（今日 / 近7天 / 近30天 / 近3月）的平均得分率分五档。':
     'Current level: five bands based on average accuracy over the selected period (Today / 7 Days / 30 Days / 3 Months).',
 
+  /* ---------- 练习日历（每周摘要 / 补签） ---------- */
+  每周摘要: 'Weekly summary',
+  '查看练习日历，可补签漏掉的日期': 'Open the practice calendar to make up a missed day',
+  练习日历: 'Practice calendar',
+  练习摘要: 'Summary',
+  打卡日历: 'Check-in calendar',
+  日历范围: 'Calendar range',
+  日历日期: 'Calendar day',
+  本周: 'This week',
+  本月: 'This month',
+  今年: 'This year',
+  '{y} 年全年': 'All of {y}',
+  补签: 'Make-up',
+  已补签: 'Made up',
+  有练习: 'Practiced',
+  '有练习，未达标': 'Practiced, goal missed',
+  未练习: 'No practice',
+  '当前连续 {n} 天': 'Streak: {n} days',
+  周一: 'Mon',
+  周二: 'Tue',
+  周三: 'Wed',
+  周四: 'Thu',
+  周五: 'Fri',
+  周六: 'Sat',
+  周日: 'Sun',
+  补签规则: 'Make-up rules',
+  '每个自然周可补签 {n} 天，本周还剩 {left} 次。':
+    'You can make up {n} day per calendar week; {left} left this week.',
+  '只能补签今天之前 {n} 天内的日期；今天与未来不需要补签。':
+    'Only days within the last {n} days can be made up — today and the future need no catch-up.',
+  '补签只把这一天记为签到，不会补上练习时长与任务数，学习统计仍以实际练习为准。':
+    'A make-up only marks the day as checked in. It adds no practice minutes or tasks — statistics still come from real practice.',
+  补签这一天: 'Make up this day',
+  '已补签，连续天数已接上。': 'Made up — your streak is connected again.',
+  '补签后这一天记为签到，连续天数会重新接上；本周还剩 {n} 次额度。':
+    'This day will count as checked in and your streak reconnects. {n} make-up left this week.',
+  '这一周的免费补签额度已用完，下周会有新的额度。':
+    'The free make-up for that week is used up — a new one arrives next week.',
+  '超出可补签的时间范围，只能补最近 {n} 天。':
+    'That day is too far back; only the last {n} days can be made up.',
+  '这一天已经是签到状态，不用补签。': 'This day is already checked in.',
+  '今天与未来的日期不需要补签，先练起来就好。': 'Today and future days need no make-up — just start practising.',
+
   /* ---------- 带占位符的模板（trf） ---------- */
   '录音中 {s}s，松开结束': 'Recording {s}s — release to stop',
   '查询 {w}': 'Look up {w}',

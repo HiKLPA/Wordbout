@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useAnalyticsRoot } from '@/lib/useAnalyticsRoot';
+import { useNotificationTap, useReminderSync } from '@/lib/useReminder';
 import { AppStoreProvider, useApp } from '@/store/AppStore';
 import { ThemeProvider, useTheme } from '@/theme/ThemeProvider';
 import { useAppFonts } from '@/theme/fonts';
@@ -59,6 +60,7 @@ function ThemedStack() {
         <Stack.Screen name="privacy-consent" />
         <Stack.Screen name="about" />
         <Stack.Screen name="stats" />
+        <Stack.Screen name="practice-calendar" />
         <Stack.Screen name="analytics" />
         <Stack.Screen name="profile" />
         <Stack.Screen name="translate" />
@@ -76,6 +78,10 @@ function Root() {
   const fontsLoaded = useAppFonts();
   /** 会话 / 页面停留 / 前后台切换的埋点（NFR-6），页面侧不用再写 */
   useAnalyticsRoot();
+  /** 每日练习提醒的本机排程（FR-N-1）：开关 / 时间 / 达标状态一变就重排 */
+  useReminderSync();
+  /** 点开提醒回到练习页 */
+  useNotificationTap();
 
   useEffect(() => {
     if (ready && fontsLoaded) void SplashScreen.hideAsync();

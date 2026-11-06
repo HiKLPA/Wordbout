@@ -98,3 +98,30 @@ export function monthStartKey(key: string): string {
   const d = parseKey(key);
   return dateKey(new Date(d.getFullYear(), d.getMonth(), 1));
 }
+
+/** 当月最后一天（YYYY-MM-DD） */
+export function monthEndKey(key: string): string {
+  const d = parseKey(key);
+  return dateKey(new Date(d.getFullYear(), d.getMonth() + 1, 0));
+}
+
+/** 自然周（周一起）的最后一天 */
+export function weekEndKey(key: string): string {
+  return addDays(weekStartKey(key), 6);
+}
+
+/**
+ * 日历格子里的「第几号到第几号」：给定一周的起点，返回 7 个日期键。
+ * 周视图与月视图的网格都按自然周排列，行数因此一致（月视图首行可能落在上月）。
+ */
+export function weekDays(weekStart: string): string[] {
+  return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
+}
+
+/** 某年的 12 个月：每个月给出「月起点 / 月终点」 */
+export function monthsOfYear(year: number): { month: number; from: string; to: string }[] {
+  return Array.from({ length: 12 }, (_, i) => {
+    const from = dateKey(new Date(year, i, 1));
+    return { month: i + 1, from, to: monthEndKey(from) };
+  });
+}

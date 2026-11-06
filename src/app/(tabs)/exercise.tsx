@@ -58,6 +58,7 @@ import {
 import { exerciseItems } from '@/data/questions';
 import { appConfig, boards, exerciseTypes, exerciseTypeMap, levels } from '@/config/appConfig';
 import { addDays, todayKey } from '@/domain/date';
+import { trackTap } from '@/lib/analytics';
 import { aggregate } from '@/domain/stats';
 import { tr, trf } from '@/i18n';
 import { useApp } from '@/store/AppStore';
@@ -148,6 +149,43 @@ function StartArrowButton({ label, onPress }: { label: string; onPress: () => vo
       }}
     >
       <HintIcon size={18} color={theme.colors.brand} />
+    </Pressable>
+  );
+}
+
+/** 连续天数行右侧「每周摘要」入口：胶囊高 28、圆角取半 */
+const SUMMARY_ENTRY_HEIGHT = 28;
+
+/**
+ * 连续天数右侧的入口钮：「每周摘要」，点进去是练习日历（周 / 月 / 年 + 补签）。
+ * 只有一行字 + 一枚箭头（箭头用页头返回箭头那一枚字形，不翻转即为向右），
+ * 底色不铺、只留 0.5px 描边 —— 它是页头里的次级入口，不该抢连续天数本身的注意力。
+ */
+function SummaryEntry({ onPress }: { onPress: () => void }) {
+  const theme = useTheme();
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={tr('每周摘要')}
+      accessibilityHint={tr('查看练习日历，可补签漏掉的日期')}
+      hitSlop={8}
+      style={{
+        height: SUMMARY_ENTRY_HEIGHT,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+        paddingLeft: 12,
+        paddingRight: 8,
+        borderRadius: 999,
+        borderWidth: stroke.base,
+        borderColor: theme.colors.border,
+      }}
+    >
+      <AppText kind="tiny" color={theme.colors.textSecondary}>
+        {tr('每周摘要')}
+      </AppText>
+      <HintIcon size={14} color={theme.colors.brand} />
     </Pressable>
   );
 }
@@ -478,16 +516,24 @@ export default function ExerciseScreen() {
    */
   const topBlock = (
     <View style={{ gap: HEADER_ROW_GAP, paddingHorizontal: layout.pagePadding }}>
-      {/* Frame 18：连续天数（原鼓励语已删） */}
-      <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 8 }}>
-        <AppText kind="xl" color={theme.colors.text}>
-          {tr('已连续')}
-        </AppText>
-        {/* 「天」并入数字：数值 + 单位是同一个整体（品牌红），
-            整串走 `{n} 天` 词条 → 英文取 `{n} days`，避免单位单独翻译成空串导致英文缺一截 */}
-        <AppText kind="xl" color={theme.colors.brand}>
-          {trf('{n} 天', { n: streak })}
-        </AppText>
+      {/* Frame 18：连续天数 + 右侧「每周摘要」入口（进练习日历，可在日历里补签） */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'baseline', gap: 8 }}>
+          <AppText kind="xl" color={theme.colors.text}>
+            {tr('已连续')}
+          </AppText>
+          {/* 「天」并入数字：数值 + 单位是同一个整体（品牌红），
+              整串走 `{n} 天` 词条 → 英文取 `{n} days`，避免单位单独翻译成空串导致英文缺一截 */}
+          <AppText kind="xl" color={theme.colors.brand}>
+            {trf('{n} 天', { n: streak })}
+          </AppText>
+        </View>
+        <SummaryEntry
+          onPress={() => {
+            trackTap('每周摘要', { kind: 'entry' });
+            router.push('/practice-calendar' as never);
+          }}
+        />
       </View>
 
       {/* Frame 15：练习 / 测验 / 题集 / 能力趋势 四枚等分整行宽度的按钮（各一枚图标、无文字），

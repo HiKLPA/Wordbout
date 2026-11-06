@@ -252,4 +252,11 @@ export const enHome: Record<string, Entry> = {
   '{n} 个任务': '{n} tasks',
   '已完成 {n} 分钟专注。': 'You completed {n} minutes of focus.',
   '已完成 {n} 个任务。': 'You completed {n} tasks.',
+  /* ---------- 设置 · 每日提醒（本机通知，FR-N-1） ---------- */
+  今日练习还没完成: 'Practice for today is not done yet',
+  '练几分钟就算达标，现在继续。': 'A few minutes is enough to hit your goal — pick up where you left off.',
+  '系统通知权限已关闭，开关打开也收不到提醒。在系统设置里允许通知后，这里的开关就能重新打开。':
+    'Notifications are off for Wordbout, so no reminder can arrive. Allow notifications in system settings and this switch will work again.',
+  '网页版不支持本地通知，请在手机 App 中开启。':
+    'Local notifications are not available on the web — turn them on in the mobile app.',
 };

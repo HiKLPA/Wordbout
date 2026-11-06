@@ -13,9 +13,10 @@ import { AppState } from 'react-native';
 import { appConfig } from '@/config/appConfig';
 import type { BoardId, ExerciseTypeId } from '@/config/appConfig';
 import { EVENT_NAMES } from '@/domain/analytics';
-import { addDays, dateKey, todayKey } from '@/domain/date';
+import { dateKey, todayKey } from '@/domain/date';
 import { DEFAULT_FOLDER_ID, defaultFavoriteFolder, sortFoldersAlpha } from '@/domain/favorites';
 import { emptyDaily, isQualified, recomputeDaily } from '@/domain/stats';
+import { canMakeUp, computeStreak, type MakeupResult } from '@/domain/streak';
 import type {
   AppSettings,
   Attempt,
@@ -56,6 +57,7 @@ function defaultSettings(): AppSettings {
     reminderEnabled: appConfig.reminder.enabled,
     reminderHour: appConfig.reminder.defaultHour,
     reminderMinute: appConfig.reminder.defaultMinute,
+    reminderAsked: false,
     analyticsEnabled: appConfig.analytics.enabled,
   };
 }
@@ -76,6 +78,7 @@ export function initialState(): PersistedState {
     settings: defaultSettings(),
     levelId: 'daily',
     daily: {},
+    makeups: {},
     attempts: [],
     favorites: [],
     favoriteFolders: [defaultFavoriteFolder()],
@@ -116,6 +119,8 @@ function normalizeState(stored: PersistedState): PersistedState {
       [],
     /* 断点续做：老数据没有这个字段，统一补成「没有进行中的练习」 */
     lastPractice: stored.lastPractice ?? null,
+    /* 补签是后加的：老数据没有就是一天都没补过 */
+    makeups: stored.makeups ?? {},
   };
 }
 
@@ -173,6 +178,12 @@ export interface AppActions {
    * （退出练习页退到哪一层都还能续），只有下次抽定新队列时才被覆盖。
    */
   savePracticeResume: (resume: PracticeResume) => void;
+  /**
+   * 补签（FR-E-1 的延伸）：把练习日历里某个漏掉的历史日期补记为达标。
+   * 只写 `makeups` —— 影响连续天数与日历标记，**不动 `daily` 的时长与任务数**，
+   * 学习统计仍只认作答明细（DR-3）。返回结果供页面就地提示原因。
+   */
+  makeUpDay: (key: string) => MakeupResult;
   resetLearningData: () => void;
   removeAttempt: (attemptId: string) => void;
   exportData: (format: 'csv' | 'json') => string;
@@ -543,10 +554,33 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
           /** 断点只服务本机续做，不参与云同步，所以不动 pendingSync */
           return same ? prev : { ...prev, lastPractice: resume };
         }),
+      makeUpDay: (key) => {
+        /* 判断读的是「当前」状态：补签要按最新的 daily / 额度算，不能等 setState 回调里才知道结果 */
+        const cur = stateRef.current;
+        const verdict = canMakeUp({
+          daily: cur.daily,
+          makeups: cur.makeups,
+          thresholds: {
+            timeThresholdMin: cur.settings.dailyTimeThreshold,
+            taskThreshold: cur.settings.dailyTaskThreshold,
+          },
+          key,
+          today: todayKey(),
+        });
+        if (verdict !== 'ok') return verdict;
+        track(EVENT_NAMES.makeup, { day: key });
+        setState((prev) =>
+          prev.makeups[key]
+            ? prev
+            : { ...prev, makeups: { ...prev.makeups, [key]: Date.now() }, pendingSync: true },
+        );
+        return 'ok';
+      },
       resetLearningData: () =>
         setState((prev) => ({
           ...prev,
           daily: {},
+          makeups: {},
           attempts: [],
           writingBook: [],
           /* 学习数据清空后没有「上次练习」可续，断点一并清掉 */
@@ -599,29 +633,24 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     };
   }, [state.daily, sessionSeconds]);
 
-  const { streak, todayQualified } = useMemo(() => {
-    const key = todayKey();
-    const qualified = (k: string) => {
-      const d = state.daily[k];
-      if (!d) return false;
-      return isQualified(
-        d.durationSec,
-        d.taskCount,
-        state.settings.dailyTimeThreshold,
-        state.settings.dailyTaskThreshold,
-      );
-    };
-    const tq = qualified(key) || todayQualifiedFrom(today, state);
-    let count = 0;
-    let cur = tq ? key : addDays(key, -1);
-    let guard = 0;
-    while (qualified(cur) && guard < 3650) {
-      count += 1;
-      cur = addDays(cur, -1);
-      guard += 1;
-    }
-    return { streak: count, todayQualified: tq };
-  }, [state.daily, state.settings, today]);
+  /**
+   * 连续天数与今日是否达标：口径在 `domain/streak`（达标 + 补签，两处页面共用一份）。
+   * 今日的实时状态要把进行中的会话算进去，所以传 `todayQualified`。
+   */
+  const { streak, todayQualified } = useMemo(
+    () =>
+      computeStreak({
+        daily: state.daily,
+        makeups: state.makeups,
+        thresholds: {
+          timeThresholdMin: state.settings.dailyTimeThreshold,
+          taskThreshold: state.settings.dailyTaskThreshold,
+        },
+        today: todayKey(),
+        todayQualified: todayQualifiedFrom(today, state),
+      }),
+    [state.daily, state.makeups, state.settings, today],
+  );
 
   const stateValue = useMemo<AppContextValue>(
     () => ({

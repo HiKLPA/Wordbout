@@ -43,6 +43,10 @@ export const EVENT_NAMES = {
   gradeResult: 'grade_result',
   favoriteToggle: 'favorite_toggle',
   settingsChange: 'settings_change',
+  /** 补签：看「一周一次」的额度是不是够用，也看补签会不会被当成常规操作 */
+  makeup: 'makeup_day',
+  /** 每日提醒：排程 / 撤掉 / 权限被拒（只记结果，不记内容） */
+  reminder: 'reminder_sync',
 } as const;
 
 /** 单次停留上限：超过半小时按半小时算，避免「开着页面去吃饭」污染均值 */
