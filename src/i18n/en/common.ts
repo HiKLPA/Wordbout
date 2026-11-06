@@ -26,6 +26,7 @@ export const enCommon: Record<string, Entry> = {
   复制: 'Copy',
   已复制: 'Copied',
   关闭: 'Close',
+  好: 'OK',
   收起: 'Collapse',
   展开: 'Expand',
   暂无: 'None',

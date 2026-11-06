@@ -74,8 +74,16 @@ const files = listFiles(SRC);
 const acc = { literals: [], templates: [] };
 for (const f of files) collect(f, acc);
 
+/** 界面层文件：只有这些目录里的中文需要翻译（`src/data`、`src/content` 保持简体） */
+const UI_SCOPE = /^src\/(app|components|config|domain|theme|store|lib)\//;
+const ui = acc.literals.filter((x) => UI_SCOPE.test(x.file));
+
 /* ---------- 1. 繁体查表 ---------- */
-const unique = [...new Set(acc.literals.map((x) => x.value))].sort();
+/* 只收**界面文案**（src/app|components|config|domain|theme|store|lib）。
+   src/data 与 src/content 按约定保持简体，把它们的字符串一起转出来会让词表里
+   多出整本词典的繁体副本（实测两条巨串 60 万 / 38 万字符，生成物 2.95MB → 40KB），
+   而且那些字符串本来也不会被 `localize()` 查到。 */
+const unique = [...new Set(ui.map((x) => x.value))].sort();
 const dict = {};
 for (const zh of unique) {
   let out = convert(zh);
@@ -93,8 +101,6 @@ fs.writeFileSync(
 );
 
 /* ---------- 2. 界面文案清单 ---------- */
-const UI_SCOPE = /^src\/(app|components|config|domain|theme|store|lib)\//;
-const ui = acc.literals.filter((x) => UI_SCOPE.test(x.file));
 const byFile = {};
 for (const item of ui) (byFile[item.file] ??= new Set()).add(item.value);
 const tpl = {};

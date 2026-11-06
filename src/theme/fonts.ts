@@ -18,8 +18,29 @@ import { Barlow_500Medium } from '@expo-google-fonts/barlow/500Medium';
 import { Barlow_600SemiBold } from '@expo-google-fonts/barlow/600SemiBold';
 import { Barlow_700Bold } from '@expo-google-fonts/barlow/700Bold';
 import { useFonts } from 'expo-font';
+import { Platform } from 'react-native';
 
 import { hasCjk } from '@/theme/script';
+
+/**
+ * 思源黑体子集的两个格式：原生端只认 ttf，web 端用同一份子集压出的 woff2
+ * （体积约 ttf 的 1/3，首屏要拉的字体从 7.7MB 降到 3.6MB）。
+ * 由 `scripts/fonts-subset.py` 同时产出，字符集完全一致。
+ */
+const useWoff2 = Platform.OS === 'web';
+
+/* Metro 的资源引用必须写静态字面量路径，不能用变量拼；资源 require 不是模块导入，规则在这里不适用 */
+/* eslint-disable @typescript-eslint/no-require-imports */
+const Noto500 = useWoff2
+  ? require('../../assets/fonts/NotoSansSC-500Medium.woff2')
+  : require('../../assets/fonts/NotoSansSC-500Medium.ttf');
+const Noto600 = useWoff2
+  ? require('../../assets/fonts/NotoSansSC-600SemiBold.woff2')
+  : require('../../assets/fonts/NotoSansSC-600SemiBold.ttf');
+const Noto700 = useWoff2
+  ? require('../../assets/fonts/NotoSansSC-700Bold.woff2')
+  : require('../../assets/fonts/NotoSansSC-700Bold.ttf');
+/* eslint-enable @typescript-eslint/no-require-imports */
 
 /** 英文与数字（Barlow）：槽位 → 实际字重文件 */
 export const LatinFont = {
@@ -91,9 +112,9 @@ export function useAppFonts(): boolean {
     Barlow_600SemiBold,
     Barlow_700Bold,
     // 思源黑体子集（常用汉字 + 全角标点 + ASCII），由 scripts/fonts-subset.py 生成
-    NotoSansSC_500Medium: require('../../assets/fonts/NotoSansSC-500Medium.ttf'),
-    NotoSansSC_600SemiBold: require('../../assets/fonts/NotoSansSC-600SemiBold.ttf'),
-    NotoSansSC_700Bold: require('../../assets/fonts/NotoSansSC-700Bold.ttf'),
+    NotoSansSC_500Medium: Noto500,
+    NotoSansSC_600SemiBold: Noto600,
+    NotoSansSC_700Bold: Noto700,
   });
   return loaded;
 }

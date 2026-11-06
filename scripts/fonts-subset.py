@@ -89,6 +89,16 @@ def subset(src: str, dst: str, text_file: str) -> None:
     subprocess.run(cmd, check=True)
 
 
+def to_woff2(ttf: str, dst: str) -> None:
+    """同一份子集再压成 woff2（web 端只拉这个，传输量约为 ttf 的 1/3）"""
+    from fontTools.ttLib import TTFont
+
+    font = TTFont(ttf)
+    font.flavor = "woff2"
+    font.save(dst)
+    font.close()
+
+
 def verify(dst: str, chars: list) -> None:
     """自检：确认字符集里的每个字符都真的落在产物 cmap 里（缺字会被系统字体接管，肉眼看不出来）"""
     from fontTools.ttLib import TTFont
@@ -123,6 +133,9 @@ def main() -> int:
         subset(src, dst, CHARSET_FILE)
         print(f"{weight_dir}: {os.path.getsize(src) / 1048576:.1f}MB → {os.path.getsize(dst) / 1048576:.2f}MB  {dst_name}")
         verify(dst, chars)
+        woff2 = os.path.splitext(dst)[0] + ".woff2"
+        to_woff2(dst, woff2)
+        print(f"  web: {os.path.getsize(woff2) / 1048576:.2f}MB  {os.path.basename(woff2)}")
     return 0
 
 

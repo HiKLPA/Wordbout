@@ -51,3 +51,9 @@ example
 
 # 工具元数据（记忆、临时文件）
 .workbuddy/
+
+# 测试产物（端到端默认导到系统临时目录，这几条兜住手工指定路径的情况）
+.e2e-web/
+test-results/
+playwright-report/
+coverage/
