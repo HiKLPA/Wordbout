@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Platform, TextInput, View } from 'react-native';
 
@@ -28,6 +29,7 @@ import { useTheme } from '@/theme/ThemeProvider';
  */
 export default function SettingsScreen() {
   const theme = useTheme();
+  const router = useRouter();
   const { state, actions } = useApp();
   const s = state.settings;
   const screenScroll = useScreenScroll();
@@ -259,6 +261,33 @@ export default function SettingsScreen() {
               </View>
             </View>
           ))}
+        </Card>
+      </View>
+
+      {/* 统计：埋点的开关与自查入口。关掉立即停止采集，已有数据在「数据统计」页可清空 */}
+      <View style={{ gap: 10 }}>
+        <SectionTitle label="统计" />
+        <Card style={{ padding: 16, gap: 16 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <View style={{ flex: 1, gap: 4 }}>
+              <AppText kind="md" color={theme.colors.text}>
+                使用数据统计
+              </AppText>
+              <AppText kind="micro" color={theme.colors.textMuted}>
+                记录页面停留与点击，不采集文本内容
+              </AppText>
+            </View>
+            <Toggle
+              value={s.analyticsEnabled}
+              onValueChange={(v) => actions.updateSettings({ analyticsEnabled: v })}
+              accessibilityLabel={tr('使用数据统计')}
+            />
+          </View>
+          <PrimaryButton
+            label="查看数据统计"
+            tone="ghost"
+            onPress={() => router.push('/analytics' as never)}
+          />
         </Card>
       </View>
 

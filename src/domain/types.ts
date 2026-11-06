@@ -41,6 +41,11 @@ export interface AppSettings {
   reminderEnabled: boolean;
   reminderHour: number;
   reminderMinute: number;
+  /**
+   * 使用数据统计（NFR-6 埋点的用户开关）：记录本机的页面、点击与停留时长，
+   * 不采集文本内容；关掉后立即停止采集，已有数据可在「数据统计」页清空。
+   */
+  analyticsEnabled: boolean;
 }
 
 /** ---------- 词库 / 课本（FR-T-1 ~ FR-T-3） ---------- */

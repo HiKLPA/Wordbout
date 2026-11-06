@@ -11,6 +11,7 @@ import {
 import * as Speech from 'expo-speech';
 
 import { appConfig } from '@/config/appConfig';
+import { EVENT_NAMES } from '@/domain/analytics';
 import { DictEntryBlock } from '@/components/DictEntryBlock';
 import { speakButtonOffset, SpeakButton } from '@/components/SpeakButton';
 import {
@@ -35,6 +36,7 @@ import {
 } from '@/data/dictionaries';
 import { detectLang, translate, type Lang, type TranslationResult } from '@/data/translate';
 import { tr, trf } from '@/i18n';
+import { track } from '@/lib/analytics';
 import { useTheme } from '@/theme/ThemeProvider';
 import { inputFont } from '@/theme/fonts';
 import { layout, stroke } from '@/theme/tokens';
@@ -199,6 +201,13 @@ export default function TranslateScreen() {
     if (!source || loading) return;
     // 发起翻译就收起键盘：输入框随之失焦，候选栏一并收起来（点候选进来时也一样）
     Keyboard.dismiss();
+    // 查词是全 App 的第一入口：记方向、长度与是否来自联想候选，用来判断入口是否成立
+    track(EVENT_NAMES.translateQuery, {
+      dir: sourceLang,
+      chars: source.length,
+      dict,
+      fromSuggest: Boolean(override),
+    });
     setLoading(true);
     setError(null);
     try {

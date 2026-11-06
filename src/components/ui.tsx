@@ -24,6 +24,7 @@ import { HintIcon, StarIcon } from '@/components/icons';
 import { renderScriptChildren } from '@/components/ScriptText';
 import { TopFadeMask } from '@/components/TopFade';
 import { localize, tr } from '@/i18n';
+import { trackTap } from '@/lib/analytics';
 import { approxTextWidth, type FontWeightKey } from '@/theme/fonts';
 import { cjkFontOf, useAccent, useTheme, useTypography, type TextKind } from '@/theme/ThemeProvider';
 import { layout, opacity, stroke, typography } from '@/theme/tokens';
@@ -980,7 +981,15 @@ export function PrimaryButton({
   const fg = tone === 'ghost' ? theme.colors.text : onAccent;
   return (
     <Pressable
-      onPress={disabled || loading ? undefined : onPress}
+      onPress={
+        disabled || loading
+          ? undefined
+          : () => {
+              // 按钮点击统一在这里记一次：几十个页面的主操作都走 PrimaryButton，不必逐页埋
+              trackTap(accessibilityLabel ?? label ?? '未命名按钮');
+              onPress();
+            }
+      }
       accessibilityRole="button"
       accessibilityState={{ disabled: !!disabled || !!loading, busy: !!loading }}
       accessibilityLabel={tr(accessibilityLabel ?? label ?? '')}

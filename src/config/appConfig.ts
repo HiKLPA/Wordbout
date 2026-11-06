@@ -136,6 +136,23 @@ export interface AppConfig {
     defaultFormat: 'csv' | 'json';
   };
   /**
+   * 埋点（NFR-6：进入、开始、提交、评分成功与失败可追踪）。
+   * 只采本机的页面、点击与停留时长，不采文本内容；用户可在设置里关掉。
+   * 默认不发任何请求（`endpoint` 为空），数据只留在设备上，配了地址才批量上报。
+   */
+  analytics: {
+    /** 采集开关的默认值（用户在设置里关掉后立即停止） */
+    enabled: boolean;
+    /** 上报地址；空字符串 = 只存本地 */
+    endpoint: string;
+    /** 本地最多保留的条数，超出丢最旧的 */
+    maxEvents: number;
+    /** 攒够多少条尝试上报（仅配了 endpoint 时生效） */
+    flushThreshold: number;
+    /** 有效停留门槛（毫秒）：达到该时长的一次访问才算「有效停留」 */
+    engagedThresholdMs: number;
+  };
+  /**
    * 大模型服务（IF-3「大模型评分与单词解析服务」）。
    * 只要求 OpenAI 兼容的 `/chat/completions`，换服务商只改这里 + `.env`，不动业务代码；
    * 密钥不进代码：由环境变量 `EXPO_PUBLIC_AI_API_KEY` 注入（见根目录 `.env.example`）。
@@ -300,6 +317,15 @@ export const appConfig: AppConfig = {
   dataExport: {
     formats: ['csv', 'json'],
     defaultFormat: 'csv',
+  },
+  analytics: {
+    enabled: true,
+    endpoint: '',
+    // 500 条约 120 KB，够看最近一周的完整流水，又不至于把存储撑大
+    maxEvents: 500,
+    flushThreshold: 30,
+    // 3 秒：短于一次真实的「看一眼」，长于切页动画的误触
+    engagedThresholdMs: 3_000,
   },
   ai: {
     baseUrl: 'https://open.bigmodel.cn/api/paas/v4',

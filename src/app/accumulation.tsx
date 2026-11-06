@@ -26,9 +26,11 @@ import {
   toExerciseItem,
   type AccumulationItem,
 } from '@/domain/accumulation';
+import { EVENT_NAMES } from '@/domain/analytics';
 import { formatDurationHuman } from '@/domain/date';
 import { localGrade } from '@/domain/grading';
 import { tr, trf } from '@/i18n';
+import { track } from '@/lib/analytics';
 import { useApp } from '@/store/AppStore';
 import { useTheme } from '@/theme/ThemeProvider';
 import { inputFont } from '@/theme/fonts';
@@ -191,6 +193,13 @@ export default function AccumulationScreen() {
       excluded: true,
     });
     actions.finishAttempt(id, graded, graded.total);
+    track(EVENT_NAMES.gradeResult, {
+      type: ACCUMULATION_TYPE_ID,
+      ok: true,
+      score: graded.total,
+      quiz: true,
+      correct: isCorrect,
+    });
     setVerdict(isCorrect);
   };
 

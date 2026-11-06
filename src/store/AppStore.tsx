@@ -12,6 +12,7 @@ import { AppState } from 'react-native';
 
 import { appConfig } from '@/config/appConfig';
 import type { BoardId, ExerciseTypeId } from '@/config/appConfig';
+import { EVENT_NAMES } from '@/domain/analytics';
 import { addDays, dateKey, todayKey } from '@/domain/date';
 import { DEFAULT_FOLDER_ID, defaultFavoriteFolder, sortFoldersAlpha } from '@/domain/favorites';
 import { emptyDaily, isQualified, recomputeDaily } from '@/domain/stats';
@@ -31,6 +32,7 @@ import type {
   UserProfile,
   WritingBookEntry,
 } from '@/domain/types';
+import { track } from '@/lib/analytics';
 import { STORAGE_KEYS, loadJSON, removeJSON, saveJSON } from '@/lib/storage';
 import { DEFAULT_FOLDER_COLOR, type FolderColor } from '@/theme/tokens';
 
@@ -54,6 +56,7 @@ function defaultSettings(): AppSettings {
     reminderEnabled: appConfig.reminder.enabled,
     reminderHour: appConfig.reminder.defaultHour,
     reminderMinute: appConfig.reminder.defaultMinute,
+    analyticsEnabled: appConfig.analytics.enabled,
   };
 }
 
@@ -212,6 +215,9 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   const [running, setRunning] = useState(false);
   const sessionRef = useRef(0);
   const backgroundAt = useRef<number | null>(null);
+  /** 最新状态的镜像：埋点要在 setState 之前读到「当前是否已收藏」这类判断依据 */
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
   /* ---------- 载入 / 持久化 ---------- */
   useEffect(() => {
@@ -282,8 +288,10 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const actions = useMemo<AppActions>(() => {
-    const patchSettings = (patch: Partial<AppSettings>) =>
+    const patchSettings = (patch: Partial<AppSettings>) => {
+      track(EVENT_NAMES.settingsChange, { keys: Object.keys(patch).join(',') });
       setState((prev) => ({ ...prev, settings: { ...prev.settings, ...patch } }));
+    };
 
     return {
       signIn: (method, nickname) =>
@@ -413,7 +421,14 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
           return { ...prev, attempts, daily: { ...prev.daily, [key]: nextDay }, writingBook, pendingSync: true };
         });
       },
-      toggleFavorite: (item) =>
+      toggleFavorite: (item) => {
+        // 埋点先读当前状态：取消收藏与新增收藏在漏斗里是两种行为
+        const wasSaved = stateRef.current.favorites.some((f) => f.word === item.word);
+        track(EVENT_NAMES.favoriteToggle, {
+          word: item.word,
+          source: item.source,
+          on: !wasSaved,
+        });
         setState((prev) => {
           // 同一个单词可能被收藏在多个夹里，取消时一次全部移除
           const hit = prev.favorites.some((f) => f.word === item.word);
@@ -433,7 +448,8 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
             createdAt: Date.now(),
           };
           return { ...prev, favorites: [fav, ...prev.favorites], pendingSync: true };
-        }),
+        });
+      },
       setFavoriteFolders: (item, folderIds) =>
         setState((prev) => {
           // 收藏夹可能刚被删掉：只认仍然存在的那几个

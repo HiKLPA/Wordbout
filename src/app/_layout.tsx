@@ -6,6 +6,7 @@ import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { useAnalyticsRoot } from '@/lib/useAnalyticsRoot';
 import { AppStoreProvider, useApp } from '@/store/AppStore';
 import { ThemeProvider, useTheme } from '@/theme/ThemeProvider';
 import { useAppFonts } from '@/theme/fonts';
@@ -58,6 +59,7 @@ function ThemedStack() {
         <Stack.Screen name="privacy-consent" />
         <Stack.Screen name="about" />
         <Stack.Screen name="stats" />
+        <Stack.Screen name="analytics" />
         <Stack.Screen name="profile" />
         <Stack.Screen name="translate" />
         <Stack.Screen name="scan" />
@@ -72,6 +74,8 @@ function ThemedStack() {
 function Root() {
   const { ready } = useApp();
   const fontsLoaded = useAppFonts();
+  /** 会话 / 页面停留 / 前后台切换的埋点（NFR-6），页面侧不用再写 */
+  useAnalyticsRoot();
 
   useEffect(() => {
     if (ready && fontsLoaded) void SplashScreen.hideAsync();

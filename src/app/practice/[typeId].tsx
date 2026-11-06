@@ -33,10 +33,12 @@ import {
 } from '@/components/ui';
 import { appConfig, exerciseTypeMap, levels, type ExerciseTypeId } from '@/config/appConfig';
 import { exerciseItems, genresFor, itemsFor, type ExerciseItem } from '@/data/questions';
+import { EVENT_NAMES } from '@/domain/analytics';
 import { formatDurationHuman } from '@/domain/date';
 import { friendlyError, requestGrading, spellingMatches, type GradingFeedback } from '@/domain/grading';
 import type { PracticeResume, SavedItem } from '@/domain/types';
 import { tr, trf } from '@/i18n';
+import { track } from '@/lib/analytics';
 import { useFocusPlaceholder } from '@/lib/focusPlaceholder';
 import { useApp, usePracticeTimer } from '@/store/AppStore';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -777,6 +779,9 @@ export default function PracticeScreen() {
           : null;
 
     // 未提交答案就退出不计入任务数 → 只有走到这里才创建 attempt（FR-E-3 验收标准）
+    // 提交与评分分两条事件：分值靠评分那条，完成率靠提交这条，中间失败也能看出卡在哪
+    track(EVENT_NAMES.exerciseSubmit, { type: typeId, quiz: isQuiz, sec: durationSec });
+    const gradeStartedAt = Date.now();
     const id = actions.startAttempt({
       typeId,
       levelId: state.levelId,
@@ -806,9 +811,17 @@ export default function PracticeScreen() {
       onFeedback: setFeedback,
     });
 
+    const score = graded ? (localResultPreview ?? graded.total) : null;
+    track(EVENT_NAMES.gradeResult, {
+      type: typeId,
+      ok: Boolean(graded),
+      ms: Date.now() - gradeStartedAt,
+      score: score ?? -1,
+      quiz: isQuiz,
+    });
+
     if (graded) {
-      const score = localResultPreview ?? graded.total;
-      actions.finishAttempt(id, graded, score);
+      actions.finishAttempt(id, graded, score ?? graded.total);
     } else {
       actions.finishAttempt(id, null, null);
     }

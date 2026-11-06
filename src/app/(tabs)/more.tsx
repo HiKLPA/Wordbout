@@ -7,6 +7,7 @@ import { Alert, Image, Modal, Pressable, TextInput, View } from 'react-native';
 import { AboutIcon, HintIcon, Logo, PrivacyIcon, ScanIcon, SettingsIcon } from '@/components/icons';
 import { AppText, Card, PrimaryButton, Screen } from '@/components/ui';
 import { tr } from '@/i18n';
+import { trackTap } from '@/lib/analytics';
 import { useFocusPlaceholder } from '@/lib/focusPlaceholder';
 import { useApp } from '@/store/AppStore';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -233,7 +234,10 @@ export default function MoreScreen() {
           {rows.map((row) => (
             <View key={row.key}>
               <Pressable
-                onPress={() => router.push(row.href as never)}
+                onPress={() => {
+                  trackTap(row.label, { kind: 'menu' });
+                  router.push(row.href as never);
+                }}
                 accessibilityRole="button"
                 accessibilityLabel={tr(row.label)}
                 style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}

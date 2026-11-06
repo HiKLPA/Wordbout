@@ -11,6 +11,7 @@ import {
 } from '@/components/icons';
 import { AppText } from '@/components/ui';
 import { tr } from '@/i18n';
+import { trackTap } from '@/lib/analytics';
 import { useTheme } from '@/theme/ThemeProvider';
 import { layout, stroke } from '@/theme/tokens';
 
@@ -94,6 +95,8 @@ export function BottomBar({ state, descriptors, navigation }: BottomBarProps) {
           const focused = state.index === index;
           const { options } = descriptors[route.key];
           const onPress = () => {
+            // 底栏是五个一级页面唯一的横向入口，切换频次直接反映信息架构是否成立
+            trackTap(meta.label, { kind: 'tab', from: state.routes[state.index ?? 0]?.name ?? '' });
             const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
             if (!focused && !event.defaultPrevented) navigation.navigate(route.name);
           };

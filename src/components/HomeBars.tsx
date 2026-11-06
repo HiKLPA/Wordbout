@@ -4,6 +4,7 @@ import { Pressable, TextInput, View } from 'react-native';
 
 import { CameraIcon, RecordIcon } from '@/components/icons';
 import { tr } from '@/i18n';
+import { trackTap } from '@/lib/analytics';
 import { useApp } from '@/store/AppStore';
 import { inputFont } from '@/theme/fonts';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -142,7 +143,11 @@ export function ToolbarButtons() {
             hint={hint}
             blocked={blocked}
             Icon={Icon}
-            onPress={() => go(blocked ? '/privacy-consent' : route)}
+            onPress={() => {
+              // 被隐私门槛拦下时也记一笔：这个点击率就是「同意转化」的分子
+              trackTap(hint, { kind: 'toolbar', blocked });
+              go(blocked ? '/privacy-consent' : route);
+            }}
           />
         );
       })}

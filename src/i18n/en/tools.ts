@@ -10,7 +10,6 @@ export const enTools: Record<string, Entry> = {
   源语言: 'Source language',
   自动识别: 'Auto-detect',
   中文: 'Chinese',
-  翻译: 'Translate',
   '翻译中…': 'Translating…',
   '翻译服务暂时不可用，请稍后重试': 'The translation service is unavailable — try again later',
   朗读: 'Read aloud',
@@ -139,7 +138,6 @@ export const enTools: Record<string, Entry> = {
 
   /* ---------- 词库详情 ---------- */
   词库: 'Wordbooks',
-  词库详情: 'Wordbook',
   未找到该词库: 'Wordbook not found',
   未授权的词库不会上架: 'Unlicensed wordbooks are not listed',
   已收藏: 'Saved',
@@ -173,7 +171,6 @@ export const enTools: Record<string, Entry> = {
     'Look up · practise · build — about fifteen minutes a day for one solid round',
   '选择游客试用即表示暂不同意隐私政策，拍照翻译与语音翻译在同意前不可使用。':
     'Choosing the guest trial means the privacy policy is not accepted yet; photo and voice translation stay unavailable until you accept it.',
-  刷新: 'Refresh',
   双击二维码可刷新: 'Double-tap the QR code to refresh',
   有效期: 'Valid for',
   '秒，过期后自动刷新': ' s — refreshes automatically when it expires',
@@ -194,6 +191,69 @@ export const enTools: Record<string, Entry> = {
     '. Original images and audio are not uploaded or retained by default (upload=',
   '）。': ').',
   '，留存=': ', retained=',
+
+
+  /* ---------- 设置 · 数据统计（埋点自查） ---------- */
+  统计: 'Analytics',
+  使用数据统计: 'Usage analytics',
+  '记录页面停留与点击，不采集文本内容': 'Records screen time and taps, never your text',
+  查看数据统计: 'View analytics',
+  数据统计: 'Usage analytics',
+  概览: 'Overview',
+  会话: 'Sessions',
+  平均会话: 'Avg. session',
+  事件: 'Events',
+  页面停留: 'Time on screen',
+  点击排行: 'Top taps',
+  事件流水: 'Event log',
+  还没有数据: 'No data yet',
+  '正常使用一会儿再回来，页面停留与点击会自动记下来。':
+    'Use the app for a while and come back, screen time and taps are recorded automatically.',
+  '本地共 {n} 条记录，占用 {k} KB；停留达到 {t} 秒算一次有效访问。':
+    '{n} events stored locally ({k} KB). A visit counts as engaged from {t}s on.',
+  '{n} 次访问 · 占比 {p} · 有效 {q}': '{n} visits · {p} of time · {q} engaged',
+  '{n} 次': '{n}x',
+  还没有页面停留记录: 'No screen time recorded yet',
+  还没有点击记录: 'No taps recorded yet',
+  复制数据: 'Copy data',
+  清空数据: 'Clear data',
+  已复制: 'Copied',
+  '埋点数据已复制到剪贴板，可直接粘贴到表格或文档里。':
+    'Analytics JSON is on your clipboard, paste it into a spreadsheet or document.',
+  清空数据统计: 'Clear analytics',
+  '清空后不可恢复，学习记录与收藏不受影响。':
+    'This cannot be undone. Study records and favorites are not affected.',
+  取消: 'Cancel',
+  清空: 'Clear',
+  未命名: 'Untitled',
+  未命名按钮: 'Unnamed button',
+  复制埋点数据: 'Copy analytics',
+  清空埋点数据: 'Clear analytics',
+
+  /* ---------- 埋点里记录的页面名（统计页按名展示） ---------- */
+  主页: 'Home',
+  练习: 'Practice',
+  课本: 'Textbook',
+  探索: 'Explore',
+  更多: 'More',
+  练习作答: 'Practice',
+  积累测验: 'Accumulation quiz',
+  题集: 'Question sets',
+  作答回顾: 'Attempt review',
+  收藏夹: 'Favorites',
+  收藏夹管理: 'Manage folders',
+  能力趋势: 'Trends',
+  学习统计: 'Study stats',
+  设置: 'Settings',
+  个人资料: 'Profile',
+  账号: 'Account',
+  隐私与协议: 'Privacy & terms',
+  隐私授权: 'Privacy consent',
+  关于: 'About',
+  刷新: 'Refresh',
+  翻译: 'Translate',
+  词库详情: 'Wordbook',
+  引导页: 'Onboarding',
 
   /* ---------- 带占位符的模板（trf） ---------- */
   '{name}，共 {n} 词，已学 {l} 词': '{name} · {n} words · {l} learned',
