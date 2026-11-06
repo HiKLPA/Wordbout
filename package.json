@@ -1,7 +1,7 @@
 {
   "name": "wordbout",
   "main": "expo-router/entry",
-  "version": "0.11.1",
+  "version": "0.12.0",
   "dependencies": {
     "@expo-google-fonts/barlow": "^0.4.1",
     "@react-native-async-storage/async-storage": "2.2.0",
@@ -42,11 +42,13 @@
   },
   "devDependencies": {
     "@expo-google-fonts/noto-sans-sc": "^0.4.3",
+    "@playwright/test": "^1.65.0",
     "@types/react": "~19.1.10",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~10.0.0",
     "opencc-js": "^1.4.2",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vitest": "^5.1.0"
   },
   "scripts": {
     "start": "expo start",
@@ -63,7 +65,13 @@
     "dict:build:offline": "node scripts/build-dictionary.mjs --no-download",
     "fonts:subset": "python scripts/fonts-subset.py",
     "doctor": "npx expo-doctor",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "test": "npm run test:unit",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "e2e:build": "expo export --platform web --output-dir .e2e-web",
+    "test:e2e": "playwright test",
+    "test:e2e:report": "playwright show-report"
   },
   "private": true
 }
