@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Wordbout产品需求文档</title>
+<style>
+  @page {
+    size: A4;
+    margin: 24mm 20mm 22mm 20mm;
+    @top-left { content: "Wordbout 产品需求文档"; font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 9pt; color: #8A8A8A; }
+    @top-right { content: "PRD V1.7"; font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 9pt; color: #8A8A8A; }
+    @bottom-center { content: counter(page); font-family: "思源宋体","Source Han Serif SC",serif; font-size: 9pt; color: #8A8A8A; }
+  }
+  @page cover {
+    @top-left { content: none; }
+    @top-right { content: none; }
+    @bottom-center { content: none; }
+  }
+  section[role="cover"] { page: cover; }
+  body { font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 10.5pt; color: #2D2D2D; line-height: 1; }
+  p { text-indent: 0; margin: 0 0 8pt 0; text-align: justify; }
+  h1 { font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 14pt; color: #BE4B3E; margin: 0 0 12pt 0; text-indent: 0; text-align: left; page-break-after: avoid; }
+  h1 .num { color: #BE4B3E; margin-right: 8pt; font-size: 14pt; }
+  h2 { font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 10.5pt; color: #121212; margin: 14pt 0 6pt 0; text-indent: 0; text-align: left; page-break-after: avoid; }
+  h2 .num { color: #BE4B3E; margin-right: 6pt; font-size: 10.5pt; }
+  h3 { font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 10.5pt; color: #121212; margin: 12pt 0 6pt 0; text-indent: 0; text-align: left; page-break-after: avoid; }
+  ul, ol { margin: 0 0 8pt 0; padding-left: 22pt; }
+  li { margin-bottom: 4pt; text-align: justify; }
+  table { width: 100%; border-collapse: collapse; margin: 6pt 0 12pt 0; font-size: 10.5pt; line-height: 1; }
+  th { background-color: #F2EFEC; color: #121212; font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 10.5pt; border: 0.5pt solid #C9C2BB; padding: 5pt 6pt; text-align: center; vertical-align: middle; }
+  td { border: 0.5pt solid #C9C2BB; padding: 5pt 6pt; vertical-align: middle; text-indent: 0; text-align: center; font-size: 10.5pt; }
+  td.k { background-color: #FAF8F6; font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 10.5pt; width: 22%; color: #2D2D2D; text-align: center; }
+  .cp { text-indent: 0; margin: 0 0 3pt 0; text-align: center; }
+  .fl { text-indent: 0; margin: 0; line-height: 1; }
+  .note { font-size: 10.5pt; color: #2D2D2D; text-indent: 0; margin: 0 0 10pt 0; }
+  .lead { font-size: 10.5pt; color: #2D2D2D; }
+  .cover-wrap { text-align: left; padding-top: 40mm; }
+  .cover-mark { font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 10pt; letter-spacing: 4pt; color: #BE4B3E; text-indent: 0; margin-bottom: 18pt; }
+  .cover-title { font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 36pt; color: #121212; text-indent: 0; margin: 0 0 6pt 0; line-height: 1.25; }
+  .cover-sub { font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 14pt; color: #2D2D2D; text-indent: 0; margin: 0 0 40pt 0; }
+  .cover-meta { font-size: 10.5pt; color: #2D2D2D; text-indent: 0; line-height: 1.6; }
+  .cover-foot { position: absolute; bottom: 20mm; font-size: 9pt; color: #8A8A8A; text-indent: 0; }
+  .toc-title { font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 14pt; color: #BE4B3E; text-indent: 0; margin: 0 0 12pt 0; text-align: left; }
+  .toc-list, .toc-list ol { list-style: none; padding-left: 0; margin: 0; }
+  .toc-list li { font-size: 10.5pt; margin-bottom: 2pt; line-height: 1; }
+  .toc-list > li { font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; color: #BE4B3E; margin-top: 6pt; }
+  .toc-list > li.apx { color: #121212; }
+  .toc-list ol li { font-size: 10.5pt; padding-left: 0; color: #121212; }
+  .kpi { font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; color: #BE4B3E; }
+  .quote { border-left: 2.5pt solid #BE4B3E; padding-left: 10pt; margin: 8pt 0 12pt 0; font-size: 10.5pt; color: #2D2D2D; text-indent: 0; text-align: justify; }
+  .flow { font-family: "思源黑体 Medium","Source Han Sans SC Medium",sans-serif; font-size: 10.5pt; background-color: #FAF8F6; border: 0.5pt solid #C9C2BB; padding: 8pt 10pt; text-indent: 0; margin: 6pt 0 12pt 0; line-height: 1; }
+</style>
+</head>
+<body>
+
+<section role="cover">
+  <div class="cover-wrap">
+    <p class="cover-mark">PRODUCT REQUIREMENT DOCUMENT</p>
+    <p class="cover-title">Wordbout产品需求文档</p>
+    <p class="cover-sub">AI驱动的轻量英语学习工具：查、练、评一体</p>
+    <p class="cover-meta">文档版本：V1.7（评审版）</p>
+<p class="cover-meta">适用产品版本：v0.10.0现状基线 + M1–M4路线图</p>
+<p class="cover-meta">编制日期：2026年10月18日</p>
+<p class="cover-meta">文档类型：产品需求文档（PRD）</p>
+<p class="cover-meta">读者对象：产品、研发、设计、测试、内容运营、投资／评审</p>
+  </div>
+</section>
+
+<section role="cover">
+<nav class="doc-toc" aria-label="文档目录">
+  <p class="toc-title">目录</p>
+  <ol class="toc-list">
+    <li><a href="#section-1">1 文档说明</a>
+      <ol>
+        <li><a href="#section-1-1">1.1 编写目的与阅读方式</a></li>
+        <li><a href="#section-1-2">1.2 产品一句话定义</a></li>
+        <li><a href="#section-1-3">1.3 术语与缩写</a></li>
+        <li><a href="#section-1-4">1.4 需求编号与优先级规则</a></li>
+      </ol>
+    </li>
+    <li><a href="#section-2">2 背景与目标</a>
+      <ol>
+        <li><a href="#section-2-1">2.1 问题背景：三个断裂</a></li>
+        <li><a href="#section-2-2">2.2 产品定位与价值主张</a></li>
+        <li><a href="#section-2-3">2.3 本期目标与度量</a></li>
+        <li><a href="#section-2-4">2.4 非目标</a></li>
+      </ol>
+    </li>
+    <li><a href="#section-3">3 用户与场景</a>
+      <ol>
+        <li><a href="#section-3-1">3.1 用户分层</a></li>
+        <li><a href="#section-3-2">3.2 用户画像</a></li>
+        <li><a href="#section-3-3">3.3 核心任务场景</a></li>
+        <li><a href="#section-3-4">3.4 用户旅程与流失点</a></li>
+      </ol>
+    </li>
+    <li><a href="#section-4">4 竞品与差异化</a>
+      <ol>
+        <li><a href="#section-4-1">4.1 竞品选择</a></li>
+        <li><a href="#section-4-2">4.2 五维横评</a></li>
+        <li><a href="#section-4-3">4.3 差异化主张</a></li>
+        <li><a href="#section-4-4">4.4 劣势与补齐路径</a></li>
+      </ol>
+    </li>
+    <li><a href="#section-5">5 产品范围与版本规划</a>
+      <ol>
+        <li><a href="#section-5-1">5.1 能力地图</a></li>
+        <li><a href="#section-5-2">5.2 里程碑规划</a></li>
+        <li><a href="#section-5-3">5.3 优先级评估</a></li>
+        <li><a href="#section-5-4">5.4 商业化设计</a></li>
+        <li><a href="#section-5-5">5.5 免费额度与成本控制</a></li>
+      </ol>
+    </li>
+    <li><a href="#section-6">6 信息架构</a>
+      <ol>
+        <li><a href="#section-6-1">6.1 一级结构</a></li>
+        <li><a href="#section-6-2">6.2 页面清单</a></li>
+        <li><a href="#section-6-3">6.3 全局交互规则</a></li>
+      </ol>
+    </li>
+    <li><a href="#section-7">7 核心流程</a>
+      <ol>
+        <li><a href="#section-7-1">7.1 查词与翻译链路</a></li>
+        <li><a href="#section-7-2">7.2 一次练习的完整链路</a></li>
+        <li><a href="#section-7-3">7.3 连续打卡判定链路</a></li>
+        <li><a href="#section-7-4">7.4 AI探索对话链路</a></li>
+        <li><a href="#section-7-5">7.5 订阅转化链路</a></li>
+      </ol>
+    </li>
+    <li><a href="#section-8">8 功能需求</a>
+      <ol>
+        <li><a href="#section-8-1">8.1 主页与翻译</a></li>
+        <li><a href="#section-8-2">8.2 探索</a></li>
+        <li><a href="#section-8-3">8.3 课本与收藏</a></li>
+        <li><a href="#section-8-4">8.4 练习与测验</a></li>
+        <li><a href="#section-8-5">8.5 能力趋势</a></li>
+        <li><a href="#section-8-6">8.6 更多与设置</a></li>
+        <li><a href="#section-8-7">8.7 账号与云同步（M2）</a></li>
+        <li><a href="#section-8-8">8.8 订阅与能力升级入口（M3）</a></li>
+      </ol>
+    </li>
+    <li><a href="#section-9">9 非功能需求</a></li>
+    <li><a href="#section-10">10 数据指标与埋点方案</a>
+      <ol>
+        <li><a href="#section-10-1">10.1 北极星指标与指标树</a></li>
+        <li><a href="#section-10-2">10.2 事件表</a></li>
+        <li><a href="#section-10-3">10.3 漏斗、看板与实验</a></li>
+      </ol>
+    </li>
+    <li><a href="#section-11">11 发布计划</a>
+      <ol>
+        <li><a href="#section-11-1">11.1 里程碑排期</a></li>
+        <li><a href="#section-11-2">11.2 灰度与回滚</a></li>
+        <li><a href="#section-11-3">11.3 上线检查清单</a></li>
+      </ol>
+    </li>
+    <li><a href="#section-12">12 风险与合规</a>
+      <ol>
+        <li><a href="#section-12-1">12.1 风险登记表</a></li>
+        <li><a href="#section-12-2">12.2 合规待办</a></li>
+      </ol>
+    </li>
+    <li><a href="#section-13">13 附录</a></li>
+    <li class="apx"><a href="#section-a">A 现状功能清单（v0.10.0）</a></li>
+    <li class="apx"><a href="#section-b">B 关键配置项</a></li>
+    <li class="apx"><a href="#section-c">C 待确认事项</a></li>
+    <li class="apx"><a href="#section-d">D 调研来源说明</a></li>
+  </ol>
+</nav>
+</section>
+
+<section class="chapter" data-page-restart="1">
+<h1 id="section-1"><span class="num" style="font-size:14pt">1</span> 文档说明</h1>
+
+<h2 id="section-1-1"><span class="num" style="font-size:10.5pt">1.1</span> 编写目的与阅读方式</h2>
+<p>本文档描述Wordbout的产品定位、目标用户、功能需求与验收标准，供产品、研发、设计与测试在同一口径下工作。文档把产品决策放在功能清单之前，把功能清单放进可验收的用户故事，并覆盖商业化、指标、发布与风险。</p>
+<p>文档分三种读法。管理者看第2章与第5章，十分钟内可判断产品要解决什么问题、分几步走、怎么收钱。设计与研发看第6至第8章，信息架构、流程与用户故事可直接转成任务。测试看第8章验收标准与第9章非功能要求，两者合起来即为用例来源。</p>
+<p>第8章标注现状的需求均已在v0.10.0实现，可对照代码验证；标注M2、M3的是规划项。二者同章以优先级标签区分，交接时能看到已有什么、还要什么。</p>
+
+<h2 id="section-1-2"><span class="num" style="font-size:10.5pt">1.2</span> 产品一句话定义</h2>
+<div class="quote">Wordbout是一款面向中文母语者的轻量英语学习工具：用AI把查一个词、练一道题、改一段话三件事放进同一个App，每天十到十五分钟就能完成一轮有效训练。</div>
+<p>三个限定词各有边界。轻量排除社交、直播课、题库售卖与重度游戏化；中文母语者决定释义、批改反馈与界面语言以中文为主、英文为学习对象；一轮有效训练把衡量单位从背了多少词换成完成一次带反馈的练习，这是与同类产品最根本的差别。</p>
+
+<h2 id="section-1-3"><span class="num" style="font-size:10.5pt">1.3</span> 术语与缩写</h2>
+<table>
+  <tr><th style="width:22%">术语</th><th>定义</th></tr>
+  <tr><td>课本 / 词库</td><td>词库是数据单位（一批单词、释义、例句、音标的集合）；课本是词库在界面上的展示单位。用户打开的是课本，背后是一份词库。</td></tr>
+  <tr><td>板块 / 题型</td><td>练习的两级分类。板块为听、写、说、读、译五个；题型为板块下的具体训练形式，现共九种（听写、听力理解、作句、作文、词与短语、句与段、短文、阅读理解、翻译）。</td></tr>
+  <tr><td>作答（Attempt）</td><td>一次提交产生一条记录，含作答内容、得分、评分状态、耗时。为统计与回看的最小数据单位。</td></tr>
+  <tr><td>题集（Note）</td><td>用户主动加入的题目集合，同时也是错题的归宿。旧称错题本，现与收藏合并为同一套数据，可逆。</td></tr>
+  <tr><td>打卡</td><td>当日练习时长或任务数达到门槛后，把这一天计入连续练习天数。未达标的打开行为不计。</td></tr>
+  <tr><td>得分率</td><td>某项目累计得分除以该项满分，用于让不同满分标准的题型可以横向比较（0–100%）。</td></tr>
+  <tr><td>AI评分</td><td>调用大模型对写作、口语、翻译作答给出分数、问题定位与改进建议。九种题型中六种走此链路。</td></tr>
+  <tr><td>降级链</td><td>首选能力不可用时按序退让的备用方案，例如翻译失败退到内置词典、AI未配置退到离线词条。</td></tr>
+  <tr><td>P0 / P1 / P2</td><td>优先级。P0 = 缺失则产品不成立；P1 = 影响核心体验，当前里程碑内完成；P2 = 优化项，可延后。</td></tr>
+  <tr><td>US / AC / EV</td><td>用户故事（User Story）、验收标准（Acceptance Criteria）、埋点事件（Event）的编号前缀。</td></tr>
+</table>
+
+<h2 id="section-1-4"><span class="num" style="font-size:10.5pt">1.4</span> 需求编号与优先级规则</h2>
+<p>用户故事编号为US-模块代号-两位序号，模块代号取H（主页）、X（探索）、T（课本）、E（练习）、S（趋势）、O（更多）、A（账号）、P（付费）。验收标准写在故事内部，用Given / When / Then三段表达，可逐条转成测试用例。埋点事件在事件表中统一登记，故事里只引用事件名。</p>
+<table>
+  <tr><th style="width:14%">优先级</th><th style="width:34%">判定标准</th><th>处理方式</th></tr>
+  <tr><td>P0</td><td>缺失则产品不成立，或涉及数据安全与合规</td><td>当前里程碑必须交付，不通过则不发版</td></tr>
+  <tr><td>P1</td><td>直接影响核心链路完成率或留存</td><td>当前里程碑内完成，允许延后一个小版本</td></tr>
+  <tr><td>P2</td><td>体验优化，有替代路径</td><td>进待办池，按数据决定是否做</td></tr>
+</table>
+<p class="note">说明：本表只定义做什么的先后，不定义做多快。排期见第11章，节奏按个人项目的实际开发速度设置，不套用团队冲刺（Sprint）规格。</p>
+</section>
+
+<section class="chapter">
+<h1 id="section-2"><span class="num" style="font-size:14pt">2</span> 背景与目标</h1>
+
+<h2 id="section-2-1"><span class="num" style="font-size:10.5pt">2.1</span> 问题背景：三个断裂</h2>
+<p>市面上的英语学习产品大致分三类：词典类解决看不懂，背单词类解决记不住，题库与批改类解决写不对、说不出。三类产品各自成熟，但用户的学习行为是连续的，于是出现了第一个断裂：<span class="kpi">学习链路被切成三段，用户要在三到四个App之间搬运</span>。在词典里查到的生词，很少被带进背单词列表；背完的词，很少被拿去练写作；写完的作文，没有人改。每一次搬运都是一次流失点。</p>
+<p>第二个断裂是AI的位置。当前主流产品的AI多数停留在生成例句AI陪练对话这类辅助位，真正把AI当作评分引擎的很少。而主观题恰恰是学习者最缺反馈的地方：写作没人改、口语没人听、翻译对不对自己判断不了。选择题可以自评对错，主观题不行，这是存量产品长期没有解决的空白。</p>
+<p>第三个断裂是重量化。备考产品以词库数量为核心卖点，两百多本词书、每日上百词任务，对目标是每天十几分钟的用户是负担。选择成本高、任务压力大、断签即放弃，是这类产品共同的留存曲线形状。</p>
+<p>这三个断裂指向同一个位置：一个把查词、练习、AI批改放在一条链路上，且每个环节都足够轻的产品。</p>
+
+<h2 id="section-2-2"><span class="num" style="font-size:10.5pt">2.2</span> 产品定位与价值主张</h2>
+<p>Wordbout的定位是学习闭环的最小实现。它不试图在词库数量上竞争，也不做社交与课程，只保证一件事：从遇到一个不懂的词，到能用它写出一个正确的句子，全过程不离开这个App。</p>
+<table>
+  <tr><th style="width:18%">能力</th><th style="width:30%">对用户说什么</th><th>实际交付的东西</th></tr>
+  <tr><td>查</td><td>不懂就问，问了就懂</td><td>对话式查询：一个词或一句话发过去，返回释义、词源、近义词、例句；可以接着追问，不用重新组织问题。</td></tr>
+  <tr><td>练</td><td>九种练法，覆盖听说读写译</td><td>五个板块九种题型的训练，每种都有题库、倍速播放、逐题结算与断点续做。</td></tr>
+  <tr><td>评</td><td>写完有人改，说完有人听</td><td>六种主观题型由AI给出总分、分项分、问题定位与改写建议，而不是只给一个分数。</td></tr>
+</table>
+<p>这三项能力分别对应竞品的三个强项，合并在一处是产品的主要赌注。轻量是这个赌注的代价：不做的部分（社交、课程、真人服务）可能带来收入，但会破坏十几分钟一轮的节奏，因此在M1至M3内一律不做。</p>
+
+<h2 id="section-2-3"><span class="num" style="font-size:10.5pt">2.3</span> 本期目标与度量</h2>
+<p>北极星指标定为日活跃用户数（DAU）。选它而不选注册数或下载量，是因为这个产品的价值只在当天真的练了一轮时才发生：一个下载后不打开的账号，对用户、对内容、对AI成本都是负资产。DAU同时是三件事的乘积——新增、留存、召回，任何一环恶化都会立刻反映出来，适合个人项目在资源有限时做单点判断。</p>
+<table>
+  <tr><th style="width:26%">目标</th><th style="width:20%">指标</th><th style="width:16%">现状</th><th style="width:16%">目标值</th><th>说明</th></tr>
+  <tr><td>M1校园冷启动</td><td>DAU</td><td>未上线</td><td>500</td><td>以一所高校为投放单元，验证查练评一体是否被理解</td></tr>
+  <tr><td>M2留存验证</td><td>次日 / 7日留存</td><td>—</td><td>35% / 18%</td><td>工具类产品次日留存30%为及格线，低于此说明价值主张没被接受</td></tr>
+  <tr><td>M2习惯形成</td><td>打卡率（当日达标DAU占比）</td><td>—</td><td>45%</td><td>打卡门槛默认5分钟或5个任务，任一达标即可</td></tr>
+  <tr><td>M2链路健康</td><td>单次练习完成率</td><td>—</td><td>70%</td><td>进入作答到完成结算的比例，低于60%说明题目或评分在劝退</td></tr>
+  <tr><td>M2能力可靠</td><td>AI评分成功率 / P95耗时</td><td>约95% / 8–16s</td><td>≥ 97% / ≤ 12s</td><td>失败即无反馈，是主观题最致命的体验断点</td></tr>
+  <tr><td>M3商业验证</td><td>付费转化率（月活口径）</td><td>0</td><td>2.5%</td><td>国内工具类订阅转化1%–3%为常见区间</td></tr>
+</table>
+<p class="note">以上目标值为立项假设，M1结束后按真实数据重设。个人项目阶段不追求规模，追求每个数字都能解释。</p>
+
+<h2 id="section-2-4"><span class="num" style="font-size:10.5pt">2.4</span> 非目标</h2>
+<p>明确写出不做什么，比写出做什么更能约束范围。以下六项在M1至M3内不做，任何需求若指向它们，先回到本节讨论是否修改产品定义。</p>
+<ul>
+  <li>不做社交。没有好友、排行、学习小组、打卡分享。社交能提升短期活跃，但会把产品变成表演给谁看，与本产品的私人工具属性冲突。</li>
+  <li>不做课程与真人服务。不卖课、不做一对一、不做直播。这类业务依赖供给侧，与个人项目的能力不匹配。</li>
+  <li>不做题库售卖与考试报名。不代理真题版权，不接入报名入口。</li>
+  <li>不做重度游戏化。不做养成、不做抽卡、不做虚拟货币。轻量的边界是打开就能练，不是打开就要玩。</li>
+  <li>不做多语种。只做英语，不做日语、韩语等第二语种。</li>
+  <li>不做网页版与桌面版。移动端优先，鸿蒙在M4评估，不作为承诺。</li>
+</ul>
+</section>
+
+<section class="chapter">
+<h1 id="section-3"><span class="num" style="font-size:14pt">3</span> 用户与场景</h1>
+
+<h2 id="section-3-1"><span class="num" style="font-size:10.5pt">3.1</span> 用户分层</h2>
+<p>目标用户收窄为两类主用户加一类受监管用户。三类并列会导致功能互相牵制：学生要考试词库与题型，职场要邮件与会议场景，泛学习者只想刷词。本版只服务前两类，第三类以合规方式覆盖，不做针对性功能。</p>
+<table>
+  <tr><th style="width:14%">层级</th><th style="width:24%">人群</th><th style="width:30%">核心诉求</th><th>付费意愿与决策依据</th></tr>
+  <tr><td>P1主用户</td><td>高等教育阶段学生（本科、研究生，含专升本与考研）</td><td>过四六级、雅思、托福；写作与翻译没人改；想知道自己到底哪一项弱</td><td>中。价格敏感，愿为能提分的能力付费，对词库多不敏感</td></tr>
+  <tr><td>P2次用户</td><td>职场用户（入职三年内，需读写英文邮件与文档）</td><td>看得懂、写得对；通勤与午休的碎片时间；不要学习计划压迫感</td><td>较高。时间比钱贵，愿为少走弯路付费，对界面质感敏感</td></tr>
+  <tr><td>P3受监管用户</td><td>中学生及其家长</td><td>校内听写、默写、教材同步</td><td>由家长决策，价格敏感度高；本版不做教材同步，仅保证内容与时长可控</td></tr>
+</table>
+<p>P3的处理需要单独说明。目标用户包含中学生，意味着产品在合规上必须按未成年人可用的标准设计：不做诱导消费、不做连续签到惩罚、不做公开排行，并在M2引入监护人可见的使用时长说明。这与不做社交、不做游戏化的产品定义恰好一致，成本可控。</p>
+
+<h2 id="section-3-2"><span class="num" style="font-size:10.5pt">3.2</span> 用户画像</h2>
+<p>画像一：备考中的大三学生。六级考了两次，第一次424分。知道自己听力弱、作文写不好，但不知道弱到什么程度。用过两款背单词App，词库背到B开头就断了。真实需求不是更多词，是告诉我作文丢在哪、怎么改。</p>
+<p>画像二：入职两年的产品经理。每天要读英文文档、写英文邮件。查词需求高频但零散，用网页词典，查完就忘。想练写作但没有整块时间，也不想被每日任务绑架。真实需求是随手问、随手改。</p>
+<p>画像三：高一学生与他的家长。学校每周听写，家长签字的依据是分数。孩子用手机学习，家长担心的是是在学还是在玩。真实需求是过程可见、时长可控。</p>
+
+<h2 id="section-3-3"><span class="num" style="font-size:10.5pt">3.3</span> 核心任务场景</h2>
+<table>
+  <tr><th style="width:26%">场景</th><th style="width:30%">用户的原话</th><th>产品要给的东西</th></tr>
+  <tr><td>遇到生词，想弄懂而不是背下来</td><td>这个词在句子里到底什么意思？</td><td>把整句发进探索页，得到句子翻译、词在这个语境下的释义、近义词差别；可继续追问</td></tr>
+  <tr><td>写完了，想知道哪里不对</td><td>我知道写得不好，但不知道哪不好。</td><td>提交后得到总分、分项分、逐句问题定位与改写建议，分数可回看对比</td></tr>
+  <tr><td>想每天练一点，但怕坚持不下来</td><td>别给我排计划，我就练十分钟。</td><td>不预设计划；进入即练，练完即打卡；断点续做保证下次接着上次的位置</td></tr>
+  <tr><td>想确认自己有没有进步</td><td>练了两周，到底有没有用？</td><td>能力趋势页：分板块得分率、同项目得分曲线、当前水平档位</td></tr>
+</table>
+
+<h2 id="section-3-4"><span class="num" style="font-size:10.5pt">3.4</span> 用户旅程与流失点</h2>
+<p>下面的旅程表是本产品最重要的设计依据。每一行都对应一个具体的界面决策，第6至第8章的功能需求基本都是为堵这些流失点而存在。</p>
+<table>
+  <tr><th style="width:14%">阶段</th><th style="width:26%">用户动作</th><th style="width:26%">典型情绪</th><th>流失风险与对策</th></tr>
+  <tr><td>首次打开</td><td>看引导、同意隐私政策、进入主页</td><td>试试看，随时会走</td><td>风险：注册墙劝退。对策：不强制登录即可查词与练习，登录只用于AI评分与同步</td></tr>
+  <tr><td>激活</td><td>第一次查词或第一次练习，拿到一次有用的反馈</td><td>这个有点用</td><td>风险：第一次练习太难或太长。对策：默认题型为听写，一组10题，三分钟内可完成</td></tr>
+  <tr><td>形成习惯</td><td>连续三到七天打开并达标</td><td>今天还没练</td><td>风险：门槛太高、断签即放弃。对策：打卡门槛取时长与任务数任一，断签不清零历史统计</td></tr>
+  <tr><td>遇到瓶颈</td><td>分数长期不动，或某题型老是低分</td><td>挫败</td><td>风险：看不到改进方向。对策：趋势页给出分项短板与具体建议，而不是只给曲线</td></tr>
+  <tr><td>付费决策</td><td>想要更强的模型，或想打开高阶词库</td><td>犹豫</td><td>风险：付费墙突兀。对策：AI功能在免费档全部开放，付费只对应更强模型与高阶词库，入口放在能力选择处，不拦日常使用</td></tr>
+  <tr><td>长期使用</td><td>换设备、重装、想带走数据</td><td>担心丢失</td><td>风险：本地存储导致数据消失。对策：M2上云，M1提供导出</td></tr>
+</table>
+</section>
+
+<section class="chapter">
+<h1 id="section-4"><span class="num" style="font-size:14pt">4</span> 竞品与差异化</h1>
+
+<h2 id="section-4-1"><span class="num" style="font-size:10.5pt">4.1</span> 竞品选择</h2>
+<p>选取四款产品做对照，覆盖四条不同的产品路线：百词斩代表图像记忆 + 海量词库的国民级背词路线；不背单词代表语境与例句优先的内容路线；多邻国代表游戏化课程的语言学习路线；Anki代表开放记忆卡的效率工具路线。这四款分别占据用户心智中的背词语境课程自主复习四个位置，与Wordbout可能被归入的任何一个位置都相邻。</p>
+<p>需要提前说明调研方式的局限：以下数据来自公开资料与商店页（2026年10月），价格随地区与活动浮动，功能以公开宣传口径为准，未做全量功能实测。评分列为主观判断，判断依据写在说明列，便于他人复核或推翻。</p>
+
+<h2 id="section-4-2"><span class="num" style="font-size:10.5pt">4.2</span> 五维横评</h2>
+<p>评分采用五分制，5分为该类目内的上限。功能集成度看是否覆盖查、背、练、评四件事；完善度看内容体量、稳定性与细节完成度；学习成本看从打开到完成一轮有效训练的步骤数与认知负担；词库完善度看词书数量、释义来源与例句质量；AI能力看AI是否进入核心链路而非点缀。</p>
+<table>
+  <tr><th style="width:12%">维度</th><th style="width:16%">百词斩</th><th style="width:16%">不背单词</th><th style="width:16%">多邻国</th><th style="width:16%">Anki</th><th>Wordbout</th></tr>
+  <tr><td class="k">核心定位</td><td>图像化背词</td><td>语境化背词</td><td>游戏化课程</td><td>开放记忆卡</td><td>查练评一体</td></tr>
+  <tr><td class="k">功能集成度</td><td>3分：背词为主，查词与批改弱</td><td>3分：背词与例句强，无批改</td><td>4分：听说读写课程闭环，词库浅</td><td>2分：只做记忆调度，其余全无</td><td>5分：查、练、评在一条链路上</td></tr>
+  <tr><td class="k">完善度</td><td>5分：多端、离线、内容生态完整</td><td>4分：内容精良，功能面窄</td><td>5分：课程体系与交互打磨成熟</td><td>4分：核心极稳，界面原始</td><td>2分：核心链路成立，内容与账号体系待补</td></tr>
+  <tr><td class="k">学习成本</td><td>2分：任务压力大，易中断</td><td>3分：需理解语境学习方法</td><td>1分：上手极简，但进度慢</td><td>1分：需自建卡片与调度策略</td><td>5分：打开即练，一轮三到十分钟</td></tr>
+  <tr><td class="k">词库完善度</td><td>5分：两百余本词书，权威词典释义</td><td>5分：两百余本词书，原声例句</td><td>2分：约2500–3000词，覆盖入门</td><td>1分：无内置词库，依赖自制或导入</td><td>2分：五个自建词库，规模与例句量待扩</td></tr>
+  <tr><td class="k">AI能力</td><td>2分：AI多用于讲解与推荐</td><td>2分：AI辅助理解，非评分主力</td><td>3分：高阶档有AI对话练习</td><td>1分：无AI</td><td>5分：六种主观题型由AI给分并给改法</td></tr>
+  <tr><td class="k">商业模式</td><td>免费 + 会员，约15–30元/月</td><td>免费 + 会员／资源包</td><td>免费 + Super，约13美元/月</td><td>客户端买断（iOS）／免费（桌面）</td><td>免费 + 订阅，19.9元/月（首月9.9元）、199元/年</td></tr>
+  <tr><td class="k">一句话短板</td><td>背完不会用</td><td>只解决记</td><td>词库与应试脱节</td><td>学习门槛高</td><td>内容规模不足</td></tr>
+</table>
+<p>横评的结论不是我们更强，而是我们占的位置空着。功能集成度与AI能力两列上Wordbout领先，但这两项领先建立在一个尚未补齐的内容底座上：词库规模只有竞品的百分之一量级。这意味着当前的产品优势是结构性的、脆弱的，必须靠M1的内容扩容把它变成可守的优势。</p>
+
+<h2 id="section-4-3"><span class="num" style="font-size:10.5pt">4.3</span> 差异化主张</h2>
+<p>主张一：提问式的查词。传统词典给的是词条，用户要自己把词条套回句子。Wordbout给的是对话：把整句发过去，得到这句话的翻译、词在这个语境里的意思、容易混淆的近义词差别；不满意就接着问那如果换成另一个词呢。多轮上下文被保留，不需要每次重新描述前提。这一条对应的实现是多轮会话、意图判定（查词／问答／答不上来）与结果缓存。</p>
+<p>主张二：全题型AI评分。九种题型中有六种是主观题，全部走AI评分，且评分结果强制包含四块内容：总分、分项分、问题定位、可执行建议。只有分数没有理由的评价对学习没有价值，因此四要素不全的评分视为不合格，这是硬性验收，不是体验优化。写作与翻译还要求给出参考改写，口语要求指出问题最集中的句子。</p>
+<p>主张三：轻量。三个一级入口都在底栏，任何核心操作从首页出发不超过两次点击；不排学习计划、不做签到奖励、不弹营销弹窗；一轮训练的默认长度是三到十分钟。轻量的目的不是功能少，而是降低开始的成本——学习产品最大的敌人是不开始，不是功能不够。</p>
+
+<h2 id="section-4-4"><span class="num" style="font-size:10.5pt">4.4</span> 劣势与补齐路径</h2>
+<table>
+  <tr><th style="width:22%">劣势</th><th style="width:26%">对用户的实际影响</th><th style="width:20%">补齐路径</th><th>里程碑</th></tr>
+  <tr><td>词库规模小，例句少</td><td>备考用户找不到对应词书，直接流失</td><td>先补CET4／CET6全量词条与三条例句，再补雅思托福</td><td>M1</td></tr>
+  <tr><td>题库题目量少</td><td>同一题型反复出同一道题，失去练习价值</td><td>每题型扩到不少于30题，建立按难度分层</td><td>M1–M2</td></tr>
+  <tr><td>无账号与云同步</td><td>换机丢记录；付费无法校验</td><td>引入轻量后端：账号、记录同步、订阅校验</td><td>M2</td></tr>
+  <tr><td>语音评分非专业ASR</td><td>发音打分可信度不足，用户会质疑</td><td>接专业语音评测，或明确标注参考分并给出发音要点</td><td>M2–M3</td></tr>
+  <tr><td>无真题语料</td><td>应试场景缺说服力</td><td>取得授权真题或与出版社合作；无授权前不宣称真题</td><td>M3–M4</td></tr>
+</table>
+</section>
+
+<section class="chapter">
+<h1 id="section-5"><span class="num" style="font-size:14pt">5</span> 产品范围与版本规划</h1>
+
+<h2 id="section-5-1"><span class="num" style="font-size:10.5pt">5.1</span> 能力地图</h2>
+<p>下表是v0.10.0的现状基线，作为后续规划的起点。代码规模可作为参考：客户端共27个页面、约4.4万行TypeScript，从零到当前形态共13个开发日小版本。</p>
+<table>
+  <tr><th style="width:16%">模块</th><th style="width:46%">已实现能力</th><th style="width:14%">成熟度</th><th>缺口</th></tr>
+  <tr><td>主页</td><td>中英互译（大模型整句优先、词典降级）、拍照翻译、语音翻译</td><td>可用</td><td>历史记录、复制与分享</td></tr>
+  <tr><td>探索</td><td>AI对话式查询（多轮上下文、历史会话、示例提问、建议追问、结果缓存）；随机词球与列表两种浏览</td><td>可用</td><td>会话内搜索、结果导出</td></tr>
+  <tr><td>课本</td><td>继续学习、收藏夹（多夹、颜色分组、三种排序）、热门与推荐分区、词库详情与单词列表抽屉</td><td>可用</td><td>词库规模、下载管理</td></tr>
+  <tr><td>练习</td><td>三档页签（练习／测验／题集）、打卡三环与专注计时器、断点续做、五板块九题型、就地评分与结算清单</td><td>可用</td><td>题量、难度分层</td></tr>
+  <tr><td>测验</td><td>积累默写（20/40/60/80词）、综合测验（跨题型混合）</td><td>可用</td><td>限时模式</td></tr>
+  <tr><td>题集</td><td>收藏式题集，按收藏日期分区，可回练原题</td><td>可用</td><td>按题型筛选、批量移除</td></tr>
+  <tr><td>趋势</td><td>四档时段、总览三指标、得分率趋势图、板块条、分项目表与就地展开</td><td>可用</td><td>周报、目标设定</td></tr>
+  <tr><td>更多</td><td>个人资料、设置（字号／深浅色／辅助模式）、学习统计、隐私政策、关于与更新记录</td><td>可用</td><td>账号、注销、导出校验</td></tr>
+  <tr><td>AI底座</td><td>OpenAI兼容客户端、意图判定、缓存、超时与降级、配置化模型与阈值</td><td>可用</td><td>服务端代理、模型分级、成本控制</td></tr>
+  <tr><td>词典</td><td>ECDICT英汉与反查、CC-CEDICT汉英、Wiktionary在线英英，前缀联想</td><td>可用</td><td>许可署名、词条量扩展</td></tr>
+  <tr><td>账号与同步</td><td>仅界面占位（扫码登录页），无真实后端</td><td>不可用</td><td>整块缺失</td></tr>
+  <tr><td>商业化</td><td>无</td><td>不可用</td><td>整块缺失</td></tr>
+</table>
+
+<h2 id="section-5-2"><span class="num" style="font-size:10.5pt">5.2</span> 里程碑规划</h2>
+<p>节奏按个人项目的真实开发速度设定，以周为单位，不引入团队冲刺制的仪式。四个里程碑的设计原则是每个里程碑只解决一类问题：M1补内容，M2补底座，M3补商业，M4补规模。任何跨两类的需求都拆到两个里程碑里做。</p>
+<table>
+  <tr><th style="width:10%">里程碑</th><th style="width:16%">主题</th><th style="width:40%">范围</th><th>出口标准</th></tr>
+  <tr><td><p class="cp">M1</p><p class="cp">4周</p></td><td>内容达标</td><td>CET4／CET6全量词条与例句；九题型每类不少于30题；词库详情分页与下载管理；CC BY-SA署名页；数据导出校验</td><td>一个备考用户能在不遇到没题可练的情况下连续使用七天</td></tr>
+  <tr><td><p class="cp">M2</p><p class="cp">6周</p></td><td>底座补齐</td><td>账号（手机号／邮箱 + 一键登录）、学习记录云同步、冲突合并、AI请求服务端代理、埋点SDK、崩溃监控、AI每日额度</td><td>换机后连续天数、收藏、学习位置一致；密钥不再出现在客户端</td></tr>
+  <tr><td><p class="cp">M3</p><p class="cp">6周</p></td><td>商业验证</td><td>订阅（19.9元/月·首月9.9元｜199元/年）、两处能力升级入口、订单校验与恢复购买、高阶模型路由与计量、高阶词库包</td><td>付费转化可测，退款与续订链路走通</td></tr>
+  <tr><td><p class="cp">M4</p><p class="cp">8周</p></td><td>规模与扩展</td><td>周报与目标设定、雅思托福全量词库、专业语音评测接入、鸿蒙适配可行性验证、内容生产工具化</td><td>内容生产不再依赖手写代码，鸿蒙适配给出可行或不可行结论</td></tr>
+</table>
+
+<h2 id="section-5-3"><span class="num" style="font-size:10.5pt">5.3</span> 优先级评估</h2>
+<p>需求池用简化RICE打分：触达人数 × 影响程度 × 信心 ÷ 投入。三个例子说明打分口径，其余需求按同一方法处理，分数记在需求池表格里，不在本文档逐一列出。</p>
+<table>
+  <tr><th style="width:24%">需求</th><th style="width:14%">触达</th><th style="width:14%">影响</th><th style="width:12%">信心</th><th style="width:12%">投入</th><th>结论</th></tr>
+  <tr><td>词库扩容到全量</td><td>全部备考用户</td><td>高（决定去留）</td><td>高</td><td>中</td><td>P0，M1首位</td></tr>
+  <tr><td>云同步</td><td>多设备用户约40%</td><td>中（丢失记录才痛）</td><td>高</td><td>高</td><td>P0，M2（付费前提）</td></tr>
+  <tr><td>周报推送</td><td>活跃用户100%</td><td>低（可有可无）</td><td>中</td><td>低</td><td>P2，M4观察数据再定</td></tr>
+</table>
+
+<h2 id="section-5-4"><span class="num" style="font-size:10.5pt">5.4</span> 商业化设计</h2>
+<p>模式为能力免费加高阶订阅。查词、练习、AI评分与AI对话在免费档全部开放，不做按次付费墙，只设每日额度（见5.5）；订阅对应两件事：把快速模型换成高阶模型，以及打开高阶词库。这样划界有两条理由。一是成本随付费意愿走而不是随用量走：换不换更强模型是用户可感知的一次性动作，比按次收费好解释，也不会因重度免费用户推高成本而被迫改规则。二是保住DAU：核心链路上按次收费会把轻用户直接筛掉，门槛应该放在想要更好，而不是想继续用。不选广告，是因为广告与不打扰的原则冲突，也会污染未成年人的使用环境。</p>
+<table>
+  <tr><th style="width:24%">权益</th><th style="width:38%">免费版</th><th>Pro（订阅）</th></tr>
+  <tr><td>查词与翻译</td><td>不限次查词，AI对话每日40次（快速模型）</td><td>可切高阶模型，对话每日60次，支持长文解析与多轮深挖</td></tr>
+  <tr><td>AI评分</td><td>每日20次，四要素反馈（快速模型）</td><td>可切高阶模型，评分每日40次，含分项细节与改写对照</td></tr>
+  <tr><td>练习与题集</td><td>全部九种题型、错题重做、断点续做、专注计时</td><td>与免费版一致</td></tr>
+  <tr><td>趋势与统计</td><td>全部时段与板块，含AI分项建议</td><td>与免费版一致</td></tr>
+  <tr><td>模型档位</td><td>快速模型（低延迟、日常够用）</td><td>快速与高阶双档，可随时切换</td></tr>
+  <tr><td>词库</td><td>日常与CET4词库</td><td>全部词库，含CET6、IELTS、TOEFL与后续新增</td></tr>
+  <tr><td>数据</td><td>本地保存，可导出</td><td>跨设备同步，历史不限</td></tr>
+  <tr><td>价格</td><td>0元</td><td>19.9元／月（首月9.9元）；199元／年</td></tr>
+</table>
+<p>定价依据有四条。一是锚点：百词斩会员约15–30元/月、扇贝约20–40元/月、多邻国Super约13美元/月，国内学生与初入职场者可接受10–25元/月，19.9元取区间中位且压在20元关口之下。二是首月9.9元用于压低首次付费的决策成本，验证的是次月是否续订，首月转化只作参考。三是年付199元合16.6元/月，比月付低约17%，相当于付十个月用十二个月。四是成本：快速模型单次在分币以下，高阶模型单价为数倍，因此只对主动切换的用户开放并单独计量。</p>
+<p>订阅入口只有两处，都由用户主动触发：在AI面板把快速模型切换为高阶模型，在课本页打开未解锁的高阶词库。两处都不拦断日常使用，免费用户查词、练习、提交评分、看趋势的行为与付费用户一致，差别只在模型档位与可打开的课本范围。切换模型时先给一次能力对比（响应更慢、成本更高，换来更细的批改与更强的长文理解），未订阅才进入权益页；打开高阶词库时先展示课本规模与适配考试，而不是先关上门。全程不用倒计时与限时折扣，不对未成年人做付费引导。超额只提示次日恢复并降级到本地能力，不跳转付费。</p>
+
+<h2 id="section-5-5"><span class="num" style="font-size:10.5pt">5.5</span> 免费额度与成本控制</h2>
+<p>AI不收费不等于没有成本。每次评分与提问都是真实调用，成本随DAU线性增长，而订阅收入只来自少数用户，所以免费档必须有一条用量上限。这条上限保护成本，不制造付费点，原则是正常使用碰不到、异常使用一定被拦住。</p>
+<table>
+  <tr><th style="width:22%">项目</th><th style="width:26%">免费档（快速模型）</th><th style="width:24%">Pro（高阶模型）</th><th>取值依据</th></tr>
+  <tr><td>AI评分</td><td>每日20次</td><td>每日40次</td><td>一轮练习里走模型的主观题通常4–6道，20次可覆盖三轮以上，够一天练两轮再加补交与重做</td></tr>
+  <tr><td>AI对话／查词</td><td>每日40次</td><td>每日60次</td><td>单次探索常见2–4轮追问，40次约等于十个独立话题，越过这条线基本已是重度使用</td></tr>
+  <tr><td>合计调用</td><td>每日60次</td><td>每日100次</td><td>成本封顶用的硬上限；约为DAU人均真实用量（8–10次）的六倍，正常使用碰不到</td></tr>
+  <tr><td>触发频率</td><td>单分钟6次</td><td>单分钟6次</td><td>防连点与脚本，真人连续提交不会触到</td></tr>
+  <tr><td>单条输入</td><td>2000字，超出截断并提示</td><td>6000字</td><td>长文批改是高阶模型的主要增量场景，也是成本最高的场景</td></tr>
+  <tr><td>单次输出</td><td>≤ 800字</td><td>≤ 2000字</td><td>输出长度与token成本直接相关，长回答只在Pro放开</td></tr>
+</table>
+<p>额度用尽后的处理比数字本身更影响体验。评分超额时降级到本地规则判分（拼写、关键词命中、字数覆盖率），结果标注基础判分并说明不含AI反馈，用户仍可完成这一轮练习，打卡与统计照常记录；对话超额时退回内置双词典，释义、音标、例句仍可查。两者都只提示今日额度已用完、次日00:00恢复，不弹付费页、不做倒计时、不向未成年人做额度引导。额度按自然日重置而非按月累计，因为学习按天发生，按月累计会让月初的重度使用者在月末失去AI能力。</p>
+<p>额度取60次，是与市面对照后的结论。以下为几款同类产品的公开口径（2026年10月检索，随活动与地区浮动）。</p>
+<table>
+  <tr><th style="width:22%">产品</th><th style="width:20%">免费档AI额度</th><th style="width:22%">付费档</th><th>对我们的参考</th></tr>
+  <tr><td>豆包（作文批改）</td><td>2篇／日</td><td>会员39元/月不限次</td><td>批改类按篇限，额度本身就是商品</td></tr>
+  <tr><td>小猿搜题（作文批改）</td><td>5篇／日</td><td>会员提高额度</td><td>K12的免费量级集中在2–5次，超出即转化</td></tr>
+  <tr><td>千问（Qwen3-Learning）</td><td>不限次</td><td>免费</td><td>单题推理成本公开口径不足0.003元，靠端侧蒸馏与弹性算力摊薄；成本足够低才敢不限次</td></tr>
+  <tr><td>Studdy（拍照解题）</td><td>30次／日</td><td>Plus无限</td><td>工具类常见做法：免费给到30次，撞线即订阅</td></tr>
+  <tr><td>TutorEva（AI辅导）</td><td>2次／日</td><td>付费后30次／日</td><td>免费极紧，付费主要买额度而非能力</td></tr>
+</table>
+<p>市面的免费额度只有两种逻辑：2至5次的额度即商品，AI是增值功能，限次为了卖会员；20至30次的额度即防滥用，AI已进主链路，限次只为压成本。Wordbout属于后者，额度压到5次以下会毁掉一轮完整练习，所以取合计60次，约为Studdy一档的两倍。差别来自成本结构：Studdy每次含拍照识别与多模态推理，单价高出纯文本一个量级，同样预算能买到更多次文本评分。超额后再降级本地能力，长文批改与深度反馈只给Pro。</p>
+<p>成本可按同一口径估算。快速模型单次0.002–0.005元，60次上限对应单用户日成本0.12–0.30元，这是最坏情况；真实使用中DAU人均每日8–10次调用，折合0.02–0.05元，月中位约0.9元，额度放宽不改变中位值，上限只作用在尾部。以2.5%付费转化、19.9元/月计算，每DAU月收入约0.5元，差额由三处补：缓存（同词条或同文本不重复计费，复访命中率目标三成以上）、截断与摘要（长文本只送前2000字加结构摘要）、高阶客单价。降本顺序是先降额度、再换更小模型，最后才考虑对AI收费。单用户日成本连续两周超过0.06元时，评分额度回调到15次，此项只改服务端配置。</p>
+</section>
+
+<section class="chapter">
+<h1 id="section-6"><span class="num" style="font-size:14pt">6</span> 信息架构</h1>
+
+<h2 id="section-6-1"><span class="num" style="font-size:10.5pt">6.1</span> 一级结构</h2>
+<p>五个一级页面构成底栏，顺序为：主页、探索、课本、练习、更多。顺序按使用频次与心智排列：先解决看不懂（主页的翻译与查词入口），再解决想深入（探索的对话式查询），然后是背诵（课本）与练习，最后是管理（更多）。练习排在第四位，因为练习的启动成本高于查词，前置反而增加压力。</p>
+<div class="flow"><p class="fl">主页｜翻译条 + 拍照翻译 + 语音翻译</p><p class="fl">探索｜AI对话式查询 ＋ 随机词球／列表</p><p class="fl">课本｜继续学习 ＋ 收藏夹／热门／推荐 → 词库详情 → 单词列表</p><p class="fl">练习｜打卡区 ＋ 专注计时 ＋ 断点续做 ＋ 五板块九题型 ／ 测验 ／ 题集 → 练习会话 → 结算 → 能力趋势</p><p class="fl">更多｜个人资料 ＋ 设置 ＋ 学习统计 ＋ 隐私与关于</p></div>
+
+<h2 id="section-6-2"><span class="num" style="font-size:10.5pt">6.2</span> 页面清单</h2>
+<p>共25个页面。清单中的职责一列用于判断需求应该落在哪个页面，避免一个页面承担两种任务——当前版本最大的可维护性风险就来自页面职责扩散。</p>
+<table>
+  <tr><th style="width:22%">页面</th><th style="width:20%">路由</th><th style="width:38%">职责</th><th>优先级</th></tr>
+  <tr><td>主页</td><td>/(tabs)/index</td><td>翻译入口与两个快捷翻译方式</td><td>P0</td></tr>
+  <tr><td>探索</td><td>/(tabs)/explore</td><td>对话式查询与随机词汇浏览</td><td>P0</td></tr>
+  <tr><td>课本</td><td>/(tabs)/textbook</td><td>词库发现与继续学习</td><td>P0</td></tr>
+  <tr><td>练习</td><td>/(tabs)/exercise</td><td>打卡、题型入口、测验与题集</td><td>P0</td></tr>
+  <tr><td>更多</td><td>/(tabs)/more</td><td>账号、设置、统计与法务入口</td><td>P0</td></tr>
+  <tr><td>翻译</td><td>/translate</td><td>多行文本翻译、语言与词典选择、分单词释义</td><td>P0</td></tr>
+  <tr><td>拍照翻译</td><td>/scan</td><td>取词识别与逐行翻译</td><td>P1</td></tr>
+  <tr><td>语音翻译</td><td>/voice</td><td>录音识别、译文与本句重点词</td><td>P1</td></tr>
+  <tr><td>词库详情</td><td>/library/[bookId]</td><td>单词学习主流程，含释义面板与上下词</td><td>P0</td></tr>
+  <tr><td>收藏夹列表</td><td>/folders</td><td>收藏夹管理（新建、改名、颜色、排序、删除）</td><td>P1</td></tr>
+  <tr><td>收藏夹详解</td><td>/favorites/[folderId]</td><td>夹内词条浏览与移除</td><td>P1</td></tr>
+  <tr><td>练习会话</td><td>/practice/[typeId]</td><td>选题库、选文体、作答、结算四板块</td><td>P0</td></tr>
+  <tr><td>积累测验</td><td>/accumulation</td><td>选量、默写、结算三步</td><td>P1</td></tr>
+  <tr><td>题集</td><td>/sets/[board]</td><td>按收藏日期分区的题目列表，可回练</td><td>P1</td></tr>
+  <tr><td>能力趋势</td><td>/query-table</td><td>时段筛选、总览、趋势与分项目统计</td><td>P1</td></tr>
+  <tr><td>作答详情</td><td>/attempt/[id]</td><td>单次作答回看：题目、作答、评分、建议</td><td>P1</td></tr>
+  <tr><td>学习统计</td><td>/stats</td><td>累计概览、导出、删除全部记录</td><td>P1</td></tr>
+  <tr><td>设置</td><td>/settings</td><td>字号、深浅色、辅助模式、阈值</td><td>P1</td></tr>
+  <tr><td>个人资料</td><td>/profile</td><td>头像、昵称、ID与注销</td><td>P1</td></tr>
+  <tr><td>关于</td><td>/about</td><td>版本、更新记录、致谢与许可</td><td>P1</td></tr>
+  <tr><td>隐私政策</td><td>/privacy</td><td>政策正文与用户协议</td><td>P0</td></tr>
+  <tr><td>隐私同意</td><td>/privacy-consent</td><td>首次启动的同意流程</td><td>P0</td></tr>
+  <tr><td>引导</td><td>/onboarding</td><td>首次使用说明与等级选择</td><td>P1</td></tr>
+  <tr><td>扫码登录</td><td>/qr-login</td><td>登录方式之一（M2起真实可用）</td><td>P2</td></tr>
+</table>
+
+<h2 id="section-6-3"><span class="num" style="font-size:10.5pt">6.3</span> 全局交互规则</h2>
+<p>全局规则的作用是让25个页面看起来像一个产品。以下六条为强制约定，新增页面必须遵守，违反视为缺陷而非风格差异。</p>
+<ul>
+  <li>底栏恒定五个入口，切换不做转场动画（硬切），避免每次点底栏都像进了新App。</li>
+  <li>页面主操作固定在底栏。二级页的主按钮（提交、下一步、保存）一律放底栏，内容区只放卡片与表单，保证拇指可达且位置稳定。</li>
+  <li>二级页有返回箭头，标题靠左，不写副标题。返回键与系统手势、Android返回键同口径，逐级返回（题目→文体→题库→退出）。</li>
+  <li>空态必须给出下一步动作，不允许只显示暂无数据。无记录、无网络、未登录三种空态各有独立文案与按钮。</li>
+  <li>错误态必须可恢复。AI失败给出重试按钮且保留已输入内容；网络失败给出离线可用的替代入口；不可恢复错误才允许阻断。</li>
+  <li>颜色不能单独承载信息。对错、升降、选中状态必须同时有图标或文字，正文与背景对比度不低于4.5:1。</li>
+</ul>
+</section>
+
+<section class="chapter">
+<h1 id="section-7"><span class="num" style="font-size:14pt">7</span> 核心流程</h1>
+
+<h2 id="section-7-1"><span class="num" style="font-size:10.5pt">7.1</span> 查词与翻译链路</h2>
+<p>这条链路是全产品调用量最大的路径，设计目标是两秒内有东西看。因此它是一条带三级降级的链：大模型整句翻译优先，失败退到内置词典逐词对照，再失败退到提示重试但保留输入。</p>
+<div class="flow"><p class="fl">输入文本 → 源语言判定（自动／手动指定）→ 大模型整句翻译</p><p class="fl">├─ 成功 → 译文卡（逐句译文 + 朗读）→ 分单词释义（音标、词性、义项、例句）</p><p class="fl">├─ 超时或失败 → 内置词典逐词对照（ECDICT／CC-CEDICT）→ 标注逐词对照</p><p class="fl">└─ 词典也未命中 → 提示暂未收录，保留输入并提供重试</p><p class="fl">任一词条 → 收藏（选择收藏夹）→ 课本页收藏夹可见</p></div>
+<table>
+  <tr><th style="width:26%">规则</th><th>说明</th></tr>
+  <tr><td>输入上限</td><td>超过500字符提示分段，不阻断提交。</td></tr>
+  <tr><td>前缀联想</td><td>英→中方向输入两个字母以上给出最多8个候选，选中候选直接查该词。</td></tr>
+  <tr><td>缓存</td><td>同一文本命中缓存不重复请求，既省成本也保证重查结果一致。</td></tr>
+  <tr><td>朗读</td><td>译文与词条都可朗读，语言按文本是否含汉字自动选择。</td></tr>
+  <tr><td>失败文案</td><td>不展示原始错误码，只展示可读原因与下一步动作。</td></tr>
+</table>
+
+<h2 id="section-7-2"><span class="num" style="font-size:10.5pt">7.2</span> 一次练习的完整链路</h2>
+<p>练习会话采用一页四板块而不是多页跳转：选题库、选文体、作答、结算都在同一路由内推进。这样做的原因有两个——评分是异步的，跨页会导致状态丢失；用户需要随时退回上一板块改选题库，多页栈会让返回行为变得不可预测。</p>
+<div class="flow"><p class="fl">① 选题库（等级：日常／CET4／CET6／IELTS／TOEFL）</p><p class="fl">↓ 确认</p><p class="fl">② 选文体（仅阅读与翻译两类需要；其余题型跳过）</p><p class="fl">↓ 确认，一次抽定题目队列（最多30题）</p><p class="fl">③ 作答（逐题；客观题本地判分，主观题提交后AI评分，结果就地展开不换屏）</p><p class="fl">↓ 下一题（可随时查看解析／加入题集）</p><p class="fl">④ 结算（逐题清单、正确率只统计客观题、重做本场）</p><p class="fl">↓</p><p class="fl">能力趋势页（本次记录已计入统计）</p></div>
+<table>
+  <tr><th style="width:24%">规则</th><th>说明</th></tr>
+  <tr><td>提交后不跳解析页</td><td>作答冻结在原地，底栏换成三按钮：查看解析、加入题集（可逆）、下一题。避免提交即离开上下文。</td></tr>
+  <tr><td>评分兜底</td><td>20秒未返回提示正在评分并保留页面；30秒或报错转评分失败，请稍后重试，草稿不丢。</td></tr>
+  <tr><td>断点续做</td><td>每题提交即写草稿；退出后练习页顶部出现继续卡片，恢复时定位到上次题号且保留已评分状态。</td></tr>
+  <tr><td>计时口径</td><td>只在作答板块计时；切后台超过30秒暂停；结算页与选题板块不计时。</td></tr>
+  <tr><td>结算正确率</td><td>只统计客观题（听写、听力理解、阅读理解）；主观题只列分数，不参与正确率，否则会把AI给85分算成错。</td></tr>
+</table>
+
+<h2 id="section-7-3"><span class="num" style="font-size:10.5pt">7.3</span> 连续打卡判定链路</h2>
+<p>打卡是留存的主要钩子，也是最容易被做坏的地方。本产品的口径是任一达标：当日累计练习时长达到门槛，或当日完成任务数达到门槛，二者满足其一即计入。门槛默认5分钟或5个任务，用户可在打卡区点击圆环调整。</p>
+<div class="flow"><p class="fl">进入任一练习 → 启动计时（前台才计时）</p><p class="fl">↓</p><p class="fl">答题提交 → 任务数 +1（未提交即退出不计）</p><p class="fl">↓</p><p class="fl">时长 ≥ 门槛（默认5分钟） 或 任务数 ≥ 门槛（默认5）</p><p class="fl">↓ 满足</p><p class="fl">当日达标 → 连续天数 +1（以设备时区自然日零点为界）</p><p class="fl">↓</p><p class="fl">跨天未达标 → 连续天数归零，但累计天数、累计时长不清零</p></div>
+
+<h2 id="section-7-4"><span class="num" style="font-size:10.5pt">7.4</span> AI探索对话链路</h2>
+<p>探索页的形态是聊天，不是表单。用户发一句话，系统先判断意图，再决定给词条面板还是通用回答。判断错误时用户可以直接补充说明，不需要换页面重来。</p>
+<div class="flow"><p class="fl">输入 → 意图判定</p><p class="fl">├─ 查单词／短语 → 词条面板（释义 → 词源 → 近义词／变形／搭配 → 例句）</p><p class="fl">├─ 其他问题 → 通用回答（正文／列表／词表三种块）</p><p class="fl">└─ 无法回答 → 明确说这个问题我答不上来，并给三个可继续的方向</p><p class="fl">↓</p><p class="fl">命中缓存 → 直接返回（不产生调用）</p><p class="fl">↓ 未命中</p><p class="fl">调用模型（带最近6条上下文）→ 成功回填并写缓存 → 失败给重试</p><p class="fl">↓</p><p class="fl">回复下方3条建议追问（可点即问）→ 长按任一条可删除 → 历史面板可回翻20段</p></div>
+
+<h2 id="section-7-5"><span class="num" style="font-size:10.5pt">7.5</span> 订阅转化链路（M3）</h2>
+<div class="flow"><p class="fl">用户主动请求更强能力（切换高阶模型／打开高阶词库）</p><p class="fl">├─ 未订阅 → 能力对比弹层（快速vs高阶：速度、深度、是否含改写对照）</p><p class="fl">│　├─ 维持快速模型 → 关闭弹层，当前请求照常完成，不丢草稿</p><p class="fl">│　└─ 解锁高阶 → 权益页（19.9元/月·首月9.9元｜199元/年）→ 支付 → 服务端校验 → 即时生效</p><p class="fl">└─ 已订阅 → 直接使用高阶模型，不再二次确认</p><p class="fl">└─ 校验失败 → 提示支付已完成，权益正在同步，可手动恢复购买</p></div>
+<p>设计要点有三条。第一，付费点不阻断正在进行的任务：用户拒绝升级时，当前请求仍以快速模型照常完成，只是不换档。第二，订阅状态以服务端为准，客户端缓存仅用于首屏渲染，防止越狱设备伪造。第三，高阶模型单独计量：日总调用量与单用户调用量都设上限，超限自动回落快速模型并提示原因，而不是拒绝服务——成本控制不该表现为产品不可用。</p>
+</section>
+
+<section class="chapter">
+<h1 id="section-8"><span class="num" style="font-size:14pt">8</span> 功能需求</h1>
+<p>本章按模块列出用户故事。每条故事包含优先级、用户故事本体、验收标准与埋点四部分。验收标准写成Given / When / Then，可直接翻译成自动化用例；埋点只写事件名，参数与上报时机见第10章事件表。</p>
+
+<h2 id="section-8-1"><span class="num" style="font-size:10.5pt">8.1</span> 主页与翻译</h2>
+<table>
+  <tr><td class="k"><p class="cp">US-H-01</p><p class="cp">P0｜现状</p></td><td>文本翻译：作为一个需要读懂英文的用户，我想把一段文本粘进去就得到译文，这样我不用切到别的App。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Given用户输入一段英文，When点击翻译，Then 2秒内展示逐句译文，每句可单独朗读。</p><p class="cp">② Given输入中文，Then自动识别为中文并译为英文，无需手动切换。</p><p class="cp">③ Given模型超时或报错，Then展示词典逐词对照结果并标注来源，不清空输入。</p><p class="cp">④ Given译文超过500字符，Then提示建议分段，仍允许提交。</p></td></tr>
+  <tr><td class="k">埋点</td><td>translate_submit、translate_result、dict_lookup</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-H-02</p><p class="cp">P1｜现状</p></td><td>拍照翻译：作为一个在课本或路牌前卡住的用户，我想拍一张就拿到逐行译文，这样我不用一个词一个词查。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Given未同意隐私政策，When点击拍照翻译，Then不可进入并提示先阅读政策。</p><p class="cp">② Given拍摄清晰印刷体，Then返回原文分行与对应译文，点某一行只显示该行译文。</p><p class="cp">③ Given识别失败，Then提示没认出文字，请重拍，不展示空白页。</p><p class="cp">④ Then原始照片不上传云端、不写入相册。</p></td></tr>
+  <tr><td class="k">埋点</td><td>scan_start、scan_success、scan_fail</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-H-03</p><p class="cp">P1｜现状</p></td><td>语音翻译：作为一个想说一句英文但不确定怎么说的用户，我想说中文就得到英文说法和朗读。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Given点击录音，When再次点击结束，Then依次展示识别原文、译文、本句重点词（词条可朗读、可收藏）。</p><p class="cp">② Given未授予麦克风权限，Then说明用途并提供跳转设置入口，不反复弹窗。</p><p class="cp">③ Given识别或翻译失败，Then 5秒内给出明确原因与重试按钮。</p><p class="cp">④ Then原始录音不上传、不留存。</p></td></tr>
+  <tr><td class="k">埋点</td><td>voice_start、voice_success、voice_fail</td></tr>
+</table>
+
+<h2 id="section-8-2"><span class="num" style="font-size:10.5pt">8.2</span> 探索</h2>
+<table>
+  <tr><td class="k"><p class="cp">US-X-01</p><p class="cp">P0｜现状</p></td><td>对话式查询：作为一个遇到生词的用户，我想把整句发过去并接着追问，这样我拿到的是这句话里这个词的意思，不是一堆需要自己筛的义项。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Given输入一个单词，Then返回单张词条面板，段序为释义、词源、近义词与搭配、例句。</p><p class="cp">② Given输入一句话或一个问题，Then返回通用回答，最多包含正文、列表、词表三种块。</p><p class="cp">③ Given上一条回复存在，When用户追问，Then系统携带最近6条上下文，回复内容与前文连贯。</p><p class="cp">④ Given命中缓存，Then不发起模型调用且结果与首次一致。</p></td></tr>
+  <tr><td class="k">埋点</td><td>ai_ask、ai_reply_success、ai_reply_fail、ai_cache_hit</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-X-02</p><p class="cp">P1｜现状</p></td><td>空态引导：作为一个第一次进探索页的用户，我想看到几个可以直接点的例子，这样我不知道问什么也能开始。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Given无对话记录，Then展示3条示例提问卡，点击即发送。</p><p class="cp">② Then示例按用户当前等级、在学词库、最近错词生成，6小时内不重复请求。</p><p class="cp">③ Given生成失败或超时，Then展示本地兜底示例，不出现空屏或报错。</p></td></tr>
+  <tr><td class="k">埋点</td><td>ai_suggest_show、ai_suggest_click</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-X-03</p><p class="cp">P1｜现状</p></td><td>历史会话与删除：作为一个多次提问的用户，我想回翻之前的对话并删掉不想要的，这样上下文不会乱。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then历史面板可翻到最近20段对话，每段显示标题与截止时间。</p><p class="cp">② Given长按任一条消息，Then二次确认后删除该条，提问与回答可分别删除。</p><p class="cp">③ Given新建对话，Then上下文清空但历史仍可回翻。</p></td></tr>
+  <tr><td class="k">埋点</td><td>ai_history_open、ai_message_delete、ai_chat_new</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-X-04</p><p class="cp">P2｜现状</p></td><td>随机浏览：作为一个没有明确目标的用户，我想随机看到一批词并随手点开，这样我能遇到计划外的词。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then可选15／30／45三档数量，球面与列表两种视图数据一致。</p><p class="cp">② Given点开某个词，Then就地展开详解，不跳页；已看过的词保持标记。</p><p class="cp">③ Given拖动球面，Then跟手旋转、无惯性突兀，不低于50 FPS。</p></td></tr>
+  <tr><td class="k">埋点</td><td>explore_random_show、explore_word_open</td></tr>
+</table>
+
+<h2 id="section-8-3"><span class="num" style="font-size:10.5pt">8.3</span> 课本与收藏</h2>
+<table>
+  <tr><td class="k"><p class="cp">US-T-01</p><p class="cp">P0｜现状</p></td><td>继续学习：作为一个学了一半的用户，我想一进课本页就看到上次学到哪，这样我不用重新找位置。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then课本页顶部固定展示继续学习：词库名 · 第n个，点击直达该词。</p><p class="cp">② Given关闭App后重开，Then位置保持。</p><p class="cp">③ Given词库更新导致词序变化，Then按单词本身而不是序号定位。</p></td></tr>
+  <tr><td class="k">埋点</td><td>wordbook_resume_click</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-T-02</p><p class="cp">P0｜现状</p></td><td>词库学习：作为一个在读词库的用户，我想逐词看释义、例句并能朗读，这样我能判断这个词要不要记。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then每个词展示单词、英式与美式音标、按词性分组的义项、常用短语与例句。</p><p class="cp">② Given点击发音，Then播放对应口音，音量与语速正常。</p><p class="cp">③ Then进度条按已学词数显示，且支持打开单词列表跳转任意词。</p></td></tr>
+  <tr><td class="k">埋点</td><td>wordbook_open、word_view、word_speak</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-T-03</p><p class="cp">P1｜现状</p></td><td>收藏夹：作为一个要把词分类的用户，我想建多个收藏夹并按颜色区分，这样我能按用途管理。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then可新建、改名、改色、删除收藏夹，默认夹不可删除。</p><p class="cp">② Given收藏一个词，Then可多选收藏夹，全部取消即取消收藏。</p><p class="cp">③ Then列表支持按时序、颜色、字母三种排序，左滑可删除单个收藏。</p><p class="cp">④ Then收藏来源（课本、练习、翻译）可区分，数据同源。</p></td></tr>
+  <tr><td class="k">埋点</td><td>favorite_add、favorite_remove、folder_create、folder_delete</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-T-04</p><p class="cp">P0｜M1</p></td><td>词库扩容与下载：作为一个备考用户，我想找到对应考试的完整词书并单独下载，这样我不必为了一个考试装下所有内容。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then CET4／CET6每库不少于3000词，每词不少于三条例句。</p><p class="cp">② Given未下载的词库，Then显示标称词数与大小，点击才开始下载并显示进度。</p><p class="cp">③ Given下载中断，Then支持断点续传，不重复下载已完成部分。</p><p class="cp">④ Then已下载词库在无网时可正常学习与练习。</p></td></tr>
+  <tr><td class="k">埋点</td><td>wordbook_download_start、wordbook_download_done、wordbook_download_fail</td></tr>
+</table>
+
+<h2 id="section-8-4"><span class="num" style="font-size:10.5pt">8.4</span> 练习与测验</h2>
+<table>
+  <tr><td class="k"><p class="cp">US-E-01</p><p class="cp">P0｜现状</p></td><td>九题型训练：作为一个要练听说读写译的用户，我想按板块选题型并立刻开始，这样我不用先读使用说明。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then五个板块下共九种题型，每题型入口显示名称与箭头，一次点击进入会话。</p><p class="cp">② Given进入会话，Then第一步是选等级，已选等级在重启后保留。</p><p class="cp">③ Given阅读与翻译题型，Then多一步选文体，文体为空时确认按钮不可用。</p></td></tr>
+  <tr><td class="k">埋点</td><td>practice_entry、practice_type_select</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-E-02</p><p class="cp">P0｜现状</p></td><td>听写与听力：作为一个练听力的用户，我想控制播放次数与语速，这样我能从听得懂慢速过渡到听得懂常速。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then听写一组10题，每题可重播至多3次并显示已用次数。</p><p class="cp">② Then四档倍速（0.5／0.75／1／1.25）可随时切换，切换不重置进度。</p><p class="cp">③ Given拼写答案大小写或首尾空格不同，Then判为正确；专有名词必须大写才算对。</p><p class="cp">④ Then结束后给出正确率、用时与错词清单，错词可一键加入题集。</p></td></tr>
+  <tr><td class="k">埋点</td><td>dictation_play、dictation_submit、dictation_finish</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-E-03</p><p class="cp">P0｜现状</p></td><td>AI评分反馈：作为一个写作业的用户，我想知道分数、问题在哪、怎么改，这样我下一次能改对。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then评分结果固定包含总分、分项分、问题定位、改进建议四块，缺一视为缺陷。</p><p class="cp">② Then写作与翻译额外给出参考改写，口语标出问题最集中的两个句子。</p><p class="cp">③ Given作答为空或明显跑题，Then给出扣分理由，不给高分。</p><p class="cp">④ Given 20秒未返回，Then显示正在评分；30秒或报错转失败态并保留草稿。</p><p class="cp">⑤ Then评分结果与原始作答一并保存，可在趋势页与作答详情回看。</p></td></tr>
+  <tr><td class="k">埋点</td><td>practice_submit、grade_success、grade_fail、grade_timeout</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-E-04</p><p class="cp">P0｜现状</p></td><td>就地结算：作为一个练完一轮的用户，我想在一页里看完这轮所有题的对错与分数，这样我知道这轮练得怎么样。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then结算页列出本场每一题的题号、题干摘要、对错或分数，当前题高亮。</p><p class="cp">② Then正确率只统计客观题；若无客观题则显示—。</p><p class="cp">③ Given点击任一行，Then回到该题并恢复已评分 + 解析展开状态。</p><p class="cp">④ Then底栏提供重做本场，重新抽题。</p></td></tr>
+  <tr><td class="k">埋点</td><td>practice_finish、practice_redo、result_row_click</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-E-05</p><p class="cp">P1｜现状</p></td><td>题集：作为一个错题想再练的用户，我想把题加入题集并按时间回练，这样我不用截图存下来。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then作答后可将本题加入或移出题集，操作可逆。</p><p class="cp">② Then题集按收藏日期分区（今天、昨天、具体日期、较早），点题直达该题作答。</p><p class="cp">③ Given从题集进入，Then直接定位到作答板块，不重新走选题库与选文体。</p><p class="cp">④ Then题集同时作为错题本使用，旧错题数据迁移后不丢。</p></td></tr>
+  <tr><td class="k">埋点</td><td>set_add、set_remove、set_open</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-E-06</p><p class="cp">P1｜现状</p></td><td>打卡与专注计时：作为一个怕坚持不下来的用户，我想看到今天还差多少，并且能用一个计时器开始练，这样我更容易开始。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then打卡区展示时长、任务数、平均得分率三个环，达标后环变为完成态。</p><p class="cp">② Given点击圆环，Then可修改当日门槛（时长5–50分钟，任务5–50个）。</p><p class="cp">③ Then专注计时器支持计时与计数两种模式，各四档预设。</p><p class="cp">④ Given当日已达标，Then连续天数即时 +1，跨天以设备时区零点为界。</p></td></tr>
+  <tr><td class="k">埋点</td><td>streak_qualified、streak_threshold_change、focus_timer_start</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-E-07</p><p class="cp">P1｜现状</p></td><td>测验：作为一个想自查的用户，我想做一次不产生学习记录的默写测试，这样我知道真实水平。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then积累测验可选20／40／60／80词，按当前词库抽题，不足时按实际出题。</p><p class="cp">② Given测验作答，Then不计入打卡三计数器、不进入趋势统计、不进入写作本。</p><p class="cp">③ Then结果页给出本次得分、答对词数与用时。</p></td></tr>
+  <tr><td class="k">埋点</td><td>quiz_start、quiz_finish</td></tr>
+</table>
+
+<h2 id="section-8-5"><span class="num" style="font-size:10.5pt">8.5</span> 能力趋势</h2>
+<table>
+  <tr><td class="k"><p class="cp">US-S-01</p><p class="cp">P1｜现状</p></td><td>趋势总览：作为一个练了两周的用户，我想知道自己在哪个板块弱，这样我知道下一步练什么。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then提供今日、近7天、近30天、近3月四档，默认今日。</p><p class="cp">② Then总览展示平均得分率与当前水平档位（熟练／良好／中等／基础／入门）。</p><p class="cp">③ Then下方三指标（练习天数、累计时长、完成任务）与练习页打卡计数器数值一致。</p><p class="cp">④ Given无任何记录，Then居中展示空态并引导去练习。</p></td></tr>
+  <tr><td class="k">埋点</td><td>trend_open、trend_range_change</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-S-02</p><p class="cp">P1｜现状</p></td><td>分项目与曲线：作为一个想验证效果的用户，我想看同一题型这几次的得分变化，这样我能判断有没有进步。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then五个板块各有得分率条，下方按题型列出次数、时长、得分率。</p><p class="cp">② Given某题型在当前区间内至少两次记录，Then可就地展开趋势图，纵轴0–100%。</p><p class="cp">③ Given只有一次记录，Then不出曲线，改为文字提示。</p><p class="cp">④ Then得分升降同时用数值与箭头表达，不只靠颜色。</p></td></tr>
+  <tr><td class="k">埋点</td><td>trend_expand_type、trend_board_filter</td></tr>
+</table>
+
+<h2 id="section-8-6"><span class="num" style="font-size:10.5pt">8.6</span> 更多与设置</h2>
+<table>
+  <tr><td class="k"><p class="cp">US-O-01</p><p class="cp">P1｜现状</p></td><td>个性化设置：作为一个长时间使用的用户，我想调字号、深浅色与辅助模式，这样我用起来不累。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then字号三档、深浅色三选（跟随系统／浅色／深色）、辅助模式（高对比度、减少动画）。</p><p class="cp">② Then修改后全局立即生效，不需要重启。</p><p class="cp">③ Then设置保存在账号级（M2后），换设备保持一致。</p></td></tr>
+  <tr><td class="k">埋点</td><td>settings_change</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-O-02</p><p class="cp">P0｜现状</p></td><td>隐私与法务：作为一个在意数据的用户，我想知道收集了什么、能带走什么、能删掉什么。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Given首次启动，Then以显著方式展示隐私政策摘要并要求确认，未确认不得使用拍照与语音。</p><p class="cp">② Then可导出学习记录（CSV／JSON），可二次确认后删除全部记录。</p><p class="cp">③ Then提供账号注销入口，注销后按法规删除或匿名化。</p></td></tr>
+  <tr><td class="k">埋点</td><td>privacy_consent、data_export、data_delete、account_delete</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-O-03</p><p class="cp">P1｜M1</p></td><td>开源许可署名：作为一个合规要求，我需要在使用开源词典处标注来源与协议。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then关于页新增开源许可区块，列出ECDICT、CC-CEDICT、Wiktionary及其协议与链接。</p><p class="cp">② Given词条来自某词典，Then翻译页与词条详情可查看该来源（不阻断阅读）。</p></td></tr>
+  <tr><td class="k">埋点</td><td>license_open</td></tr>
+</table>
+
+<h2 id="section-8-7"><span class="num" style="font-size:10.5pt">8.7</span> 账号与云同步（M2）</h2>
+<table>
+  <tr><td class="k"><p class="cp">US-A-01</p><p class="cp">P0｜M2</p></td><td>账号：作为一个换设备的用户，我想登录后拿回全部记录，这样我不怕丢数据。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then支持手机号验证码与邮箱两种方式，游客可继续使用查词与本地练习。</p><p class="cp">② Given登录成功，Then本地记录与云端合并，冲突以完成时间更晚者为准。</p><p class="cp">③ Then未登录时AI评分不可用（成本与滥用控制）。</p></td></tr>
+  <tr><td class="k">埋点</td><td>login_start、login_success、login_fail、sync_merge</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-A-02</p><p class="cp">P0｜M2</p></td><td>AI服务端代理：作为产品方，我需要模型密钥不出现在客户端，这样不会被抓包盗用。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then客户端不包含任何模型密钥，所有请求经服务端转发。</p><p class="cp">② Then服务端按账号计额度（快速模型每日20次评分、40次提问，合计60次；单分钟6次；单条输入2000字），超额返回可读文案与次日恢复时间。</p><p class="cp">③ Then超额后评分降级为本地规则判分并标注基础判分，对话退回内置双词典，任务仍可完成。</p><p class="cp">④ Then服务端记录调用量、耗时与失败率，并按日汇总单用户成本，供额度调参。</p></td></tr>
+  <tr><td class="k">埋点</td><td>ai_request、ai_quota_exceeded</td></tr>
+</table>
+
+<h2 id="section-8-8"><span class="num" style="font-size:10.5pt">8.8</span> 订阅与能力升级入口（M3）</h2>
+<table>
+  <tr><td class="k"><p class="cp">US-P-01</p><p class="cp">P0｜M3</p></td><td>订阅购买：作为一个愿意付费的用户，我想一次付款就解锁全部能力，且换设备后仍然有效。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then提供月付（19.9元，首月9.9元）与年付（199元）两档；价格、首月优惠适用范围、权益、自动续订与取消方式在支付前完整可见。</p><p class="cp">② Given支付成功，Then服务端校验票据后5秒内权益生效。</p><p class="cp">③ Given更换设备或重装，Then可恢复购买取回权益。</p><p class="cp">④ Then订阅到期前3天给出提醒，到期后降级为免费档（快速模型 + 基础词库），数据不删、记录不锁。</p><p class="cp">⑤ Then Pro用户可在任意AI面板逐次切换快速／高阶模型，切换不改变已产生的历史记录与评分。</p></td></tr>
+  <tr><td class="k">埋点</td><td>paywall_show、purchase_start、purchase_success、purchase_fail、purchase_restore</td></tr>
+</table>
+<table>
+  <tr><td class="k"><p class="cp">US-P-02</p><p class="cp">P1｜M3</p></td><td>能力升级入口：作为一个已经养成习惯的用户，我希望免费功能一直能用，只有当我想要更好的结果时才看到付费。</td></tr>
+  <tr><td class="k">验收标准</td><td><p class="cp">① Then免费档可使用全部AI功能与基础词库（快速模型），只有5.5的每日额度，不存在按次付费墙。</p><p class="cp">② Then订阅入口只在两处出现：主动切换高阶模型、打开未解锁的高阶词库。</p><p class="cp">③ Given用户拒绝升级，Then当前请求仍以快速模型完成，不丢草稿、不中断练习。</p><p class="cp">④ Then文案只说明两档差异（速度、深度、是否含改写对照），不使用倒计时与限时折扣，不对未成年人做付费引导。</p><p class="cp">⑤ Given免费额度用尽，Then不弹付费页，只提示恢复时间并给出降级结果；已订阅用户的高阶额度独立计算。</p></td></tr>
+  <tr><td class="k">埋点</td><td>paywall_show（含trigger参数）、paywall_close</td></tr>
+</table>
+</section>
+
+<section class="chapter">
+<h1 id="section-9"><span class="num" style="font-size:14pt">9</span> 非功能需求</h1>
+<p>非功能要求在这里不是锦上添花，而是验收项。每一条都给出可测的口径，避免出现感觉有点慢这类无法判定的反馈。</p>
+<table>
+  <tr><th style="width:10%">编号</th><th style="width:14%">类别</th><th style="width:44%">要求</th><th>验收方式</th></tr>
+  <tr><td>NFR-01</td><td>性能</td><td>冷启动到主页可交互 ≤ 2秒（中端机型）；页面切换无可见白屏；词库列表滚动 ≥ 55 FPS；翻译与查词P95 ≤ 2秒（本地词典路径）。</td><td>真机录屏逐帧计时，取三次中位数</td></tr>
+  <tr><td>NFR-02</td><td>轻量</td><td>首次安装包不含可选词库 ≤ 200 MB；单个词库包与音频按需下载，用户可删除；前台内存 ≤ 400 MB。</td><td>安装包体积、系统内存面板采样</td></tr>
+  <tr><td>NFR-03</td><td>可用性</td><td>弱网（3G）可完成登录与查词；无网时可学习与练习已下载内容，记录本地暂存并在联网后补传；所有长耗时操作有进度反馈。</td><td>断网与弱网模拟，检查补传不重复</td></tr>
+  <tr><td>NFR-04</td><td>兼容性</td><td>Android 8.0及以上、iOS 13及以上；适配主流屏幕、刘海屏与折叠屏分屏；系统字号放大后布局不重叠。</td><td>机型矩阵抽测，字号调至最大复查</td></tr>
+  <tr><td>NFR-05</td><td>无障碍</td><td>颜色不得单独承载信息；正文对比度 ≥ 4.5:1；所有按钮与题目可被屏幕阅读器读出；支持减少动画。</td><td>对比度工具检测 + 读屏走查</td></tr>
+  <tr><td>NFR-06</td><td>安全与隐私</td><td>最小必要采集；相机、麦克风按使用时申请；原始照片与录音默认不上传不留存；传输全HTTPS；敏感字段加密存储；提供注销入口。</td><td>抓包核查 + 权限清单核对</td></tr>
+  <tr><td>NFR-07</td><td>可维护性</td><td>词库、题库、评分标准与门槛参数（时长、任务数、缓存上限、超时）全部配置化，改参数不发版；关键链路有埋点。</td><td>改配置后重启即生效，不改代码</td></tr>
+  <tr><td>NFR-08</td><td>国际化</td><td>支持简体中文、繁体中文、英文三语；界面语言与学习内容语言分离；时间、时区、日期遵循设备设置。</td><td>三语逐页走查，无未翻译文案</td></tr>
+  <tr><td>NFR-09</td><td>稳定性</td><td>AI与网络异常不得导致崩溃或白屏；评分失败保留草稿；错误文案不暴露原始错误码。</td><td>断网、超时、5xx三类故障注入</td></tr>
+</table>
+</section>
+
+<section class="chapter">
+<h1 id="section-10"><span class="num" style="font-size:14pt">10</span> 数据指标与埋点方案</h1>
+
+<h2 id="section-10-1"><span class="num" style="font-size:10.5pt">10.1</span> 北极星指标与指标树</h2>
+<p>北极星为DAU。它被拆成三个可直接干预的因子：新增（渠道与商店转化）、留存（价值主张是否被接受）、召回（提醒与内容更新）。三个因子之下再挂具体指标，每个指标都能指到一个或多个需求。这种拆法的好处是：当DAU不动时，能立刻判断是没人来还是来了不留。</p>
+<table>
+  <tr><th style="width:16%">层级</th><th style="width:28%">指标</th><th style="width:28%">计算口径</th><th>对应手段</th></tr>
+  <tr><td>北极星</td><td>DAU</td><td>当日有任意一次启动事件的去重设备数</td><td>—</td></tr>
+  <tr><td>新增</td><td>日新增激活</td><td>首次启动并完成隐私同意的设备数</td><td>ASO、校园地推、内容投放</td></tr>
+  <tr><td>留存</td><td>次日／7日留存</td><td>首启日为T，T+1／T+7再次启动的比例</td><td>首次练习体验、打卡门槛</td></tr>
+  <tr><td>留存</td><td>打卡率</td><td>当日达标DAU ÷ 当日DAU</td><td>打卡三环、专注计时</td></tr>
+  <tr><td>深度</td><td>人均完成任务数</td><td>当日提交并完成评分的任务数 ÷ DAU</td><td>题型丰富度、断点续做</td></tr>
+  <tr><td>深度</td><td>AI评分渗透率</td><td>至少用过一次AI评分的DAU ÷ DAU</td><td>评分质量、模型响应速度</td></tr>
+  <tr><td>质量</td><td>AI评分成功率</td><td>成功返回四要素的评分数 ÷ 提交评分数</td><td>超时、降级、重试</td></tr>
+  <tr><td>收入</td><td>付费转化率</td><td>当期新增付费用户 ÷ 月活</td><td>升级入口位置、权益差异感知</td></tr>
+  <tr><td>成本</td><td>单用户AI日成本</td><td>当日模型调用成本 ÷ 当日DAU</td><td>每日额度、缓存命中率、模型档位</td></tr>
+</table>
+
+<h2 id="section-10-2"><span class="num" style="font-size:10.5pt">10.2</span> 事件表</h2>
+<p>当前无埋点SDK，以下为待接入的事件清单。命名采用对象_动作的小写下划线格式，参数只保留可用于分析的最小集合，避免过度采集。</p>
+<table>
+  <tr><th style="width:24%">事件名</th><th style="width:24%">触发时机</th><th style="width:28%">关键参数</th><th>用途</th></tr>
+  <tr><td>app_open</td><td>冷启动完成首帧</td><td>cold: bool, version, locale</td><td>DAU、启动性能</td></tr>
+  <tr><td>privacy_consent</td><td>点击同意或拒绝</td><td>result: agree/deny</td><td>同意率、合规留痕</td></tr>
+  <tr><td>tab_switch</td><td>底栏切换</td><td>from, to</td><td>入口使用分布</td></tr>
+  <tr><td>translate_submit</td><td>点击翻译</td><td>len, from_lang, dict_id</td><td>翻译使用量</td></tr>
+  <tr><td>translate_result</td><td>结果渲染完成</td><td>engine: ai/dict, ms, ok</td><td>降级率、耗时</td></tr>
+  <tr><td>dict_lookup</td><td>查单个词条</td><td>dict_id, hit: bool</td><td>词典覆盖率</td></tr>
+  <tr><td>ai_ask</td><td>发送提问</td><td>kind: word/answer, history_len</td><td>探索使用深度</td></tr>
+  <tr><td>ai_reply_success</td><td>回复渲染完成</td><td>kind, ms, cache: bool</td><td>成功率与延迟</td></tr>
+  <tr><td>ai_reply_fail</td><td>超时或报错</td><td>reason: timeout/network/api</td><td>故障归因</td></tr>
+  <tr><td>ai_suggest_click</td><td>点击示例提问</td><td>index, source: model/local</td><td>空态引导效果</td></tr>
+  <tr><td>word_view</td><td>词条面板曝光</td><td>book_id, word_id</td><td>学习量</td></tr>
+  <tr><td>favorite_add</td><td>加入收藏</td><td>source: wordbook/exercise/translate, folder_id</td><td>收藏行为分布</td></tr>
+  <tr><td>practice_entry</td><td>进入练习会话</td><td>type_id, from: tab/set/resume</td><td>题型偏好</td></tr>
+  <tr><td>practice_submit</td><td>提交作答</td><td>type_id, len, elapsed_ms</td><td>作答行为</td></tr>
+  <tr><td>grade_success</td><td>评分返回</td><td>type_id, ms, score, model</td><td>评分质量与成本</td></tr>
+  <tr><td>grade_fail</td><td>评分失败</td><td>type_id, reason, retry: bool</td><td>失败率告警</td></tr>
+  <tr><td>practice_finish</td><td>进入结算页</td><td>type_id, n_items, accuracy, duration</td><td>完成率与效率</td></tr>
+  <tr><td>streak_qualified</td><td>当日达标</td><td>day, streak, by: time/tasks</td><td>打卡率</td></tr>
+  <tr><td>trend_open</td><td>进入能力趋势</td><td>range</td><td>数据回看需求强弱</td></tr>
+  <tr><td>paywall_show</td><td>权益页曝光</td><td>trigger: model_switch/wordbook_high</td><td>转化漏斗起点</td></tr>
+  <tr><td>model_switch</td><td>切换模型档位</td><td>from: fast/pro, to, scene: explore/grade</td><td>高阶模型成本与付费意愿</td></tr>
+  <tr><td>purchase_success</td><td>支付并校验成功</td><td>plan: monthly/yearly, price</td><td>收入与ARPU</td></tr>
+  <tr><td>data_export</td><td>导出学习记录</td><td>format</td><td>数据可携带性验证</td></tr>
+</table>
+
+<h2 id="section-10-3"><span class="num" style="font-size:10.5pt">10.3</span> 漏斗、看板与实验</h2>
+<p>第一个要看的漏斗是激活漏斗，共五步：启动 → 完成隐私同意 → 开始第一次练习 → 提交首题 → 完成一轮结算。任一步骤的流失超过25%即视为阻塞点，优先排查。第二个是付费漏斗：权益页曝光 → 点击查看权益 → 进入支付 → 支付成功，用于判断问题出在不想买还是买不成。由于订阅入口埋在高阶模型切换与高阶词库两处，曝光量会远低于按次拦截的设计，因此这个漏斗只算条件转化率（曝光后成单），不与行业付费墙曝光口径直接对比。</p>
+<p>看板按周更新三张：增长看板（新增、留存、渠道）、学习看板（打卡率、完成任务数、题型分布）、质量看板（AI成功率、P95延迟、崩溃率）。实验在M3之后开展，M1至M2样本量不足，不做A/B，改为定性访谈加漏斗观察。</p>
+</section>
+
+<section class="chapter">
+<h1 id="section-11"><span class="num" style="font-size:14pt">11</span> 发布计划</h1>
+
+<h2 id="section-11-1"><span class="num" style="font-size:10.5pt">11.1</span> 里程碑排期</h2>
+<p>排期以周为单位，按个人项目的真实产出速度安排。每个里程碑内部按内容先行、工程在后排序：内容不足时工程做得再稳也没有用户愿意留。</p>
+<table>
+  <tr><th style="width:10%">周次</th><th style="width:26%">交付物</th><th style="width:34%">关键任务</th><th>出口判定</th></tr>
+  <tr><td>W1–W2</td><td>词库扩容</td><td>CET4／CET6全量词条、例句与音频；词库构建脚本化</td><td>每库 ≥ 3000词，抽查释义与例句无错</td></tr>
+  <tr><td>W3</td><td>题库扩容</td><td>九题型每类 ≥ 30题，按难度分层</td><td>同一题型连续练两轮不重复出题</td></tr>
+  <tr><td>W4</td><td>M1收口</td><td>许可署名页、下载管理、导出校验、回归测试</td><td>连续使用七天不遇到没题可练</td></tr>
+  <tr><td>W5–W6</td><td>后端骨架</td><td>账号、记录同步接口、冲突合并策略</td><td>双端登录后数据一致</td></tr>
+  <tr><td>W7–W8</td><td>AI代理与额度</td><td>服务端转发、按账号频控、调用日志</td><td>客户端抓包无密钥</td></tr>
+  <tr><td>W9–W10</td><td>M2收口</td><td>埋点SDK、崩溃监控、同步回归</td><td>换机不丢数据，事件可查</td></tr>
+  <tr><td>W11–W13</td><td>订阅</td><td>支付接入、票据校验、恢复购买、两处升级入口与模型切换</td><td>沙盒支付走通，退款与续订正常</td></tr>
+  <tr><td>W14–W16</td><td>M3收口</td><td>高阶模型路由、高阶词库包、转化埋点</td><td>转化漏斗可读</td></tr>
+  <tr><td>W17–W24</td><td>M4</td><td>周报、语音评测、鸿蒙验证、内容工具化</td><td>内容生产脱离手写代码</td></tr>
+</table>
+
+<h2 id="section-11-2"><span class="num" style="font-size:10.5pt">11.2</span> 灰度与回滚</h2>
+<p>发布分三级：内测（本人与三名种子用户）、小范围（一个班级或一个社群，约30人）、全量。每一级至少停留三天，观察崩溃率与AI成功率两个硬指标，任一超过阈值即停止扩大范围。回滚以服务端开关为第一手段：AI模型、付费墙、新题型都挂在远程配置上，出问题先关开关，不带病发版。客户端保留上一版本的安装包与数据迁移脚本，回滚时保证记录不丢。</p>
+
+<h2 id="section-11-3"><span class="num" style="font-size:10.5pt">11.3</span> 上线检查清单</h2>
+<ul>
+  <li>隐私政策与用户协议正文齐备，首次启动有同意流程，未同意时相机与麦克风功能不可用。</li>
+  <li>客户端不含任何模型密钥、测试账号与调试入口；日志不打印用户文本。</li>
+  <li>三语（简中、繁中、英文）逐页走查，无未翻译文案与断行错位。</li>
+  <li>断网、超时、5xx三类故障注入通过，评分失败不丢草稿。</li>
+  <li>打卡口径在练习页、趋势页、学习统计三处数值一致。</li>
+  <li>数据导出可打开，删除全部记录后四处统计同步清空。</li>
+  <li>深浅色与系统字号最大档下，无遮挡、无重叠、无截断。</li>
+  <li>无障碍走查：读屏可读出题目与按钮，对比度达标。</li>
+  <li>埋点事件按清单上报，字段无缺失，可查到一次完整练习。</li>
+  <li>应用商店素材（截图、简介、关键词）与真实功能一致，不宣称未实现的能力。</li>
+</ul>
+</section>
+
+<section class="chapter">
+<h1 id="section-12"><span class="num" style="font-size:14pt">12</span> 风险与合规</h1>
+
+<h2 id="section-12-1"><span class="num" style="font-size:10.5pt">12.1</span> 风险登记表</h2>
+<p>风险按影响 × 概率排序，每条给出可执行的应对，不写加强管理这类无法落地的措辞。</p>
+<table>
+  <tr><th style="width:8%">编号</th><th style="width:24%">风险</th><th style="width:12%">影响</th><th style="width:10%">概率</th><th>应对</th></tr>
+  <tr><td>R1</td><td>模型密钥置于客户端环境变量（当前仅供本地测试）</td><td>高</td><td>确定</td><td>上线前必须改为服务端代理；在M2完成前不对外分发安装包</td></tr>
+  <tr><td>R2</td><td>AI全免费后调用成本随DAU线性增长，成本与收入脱钩</td><td>高</td><td>高</td><td>默认只走快速模型；每日额度封顶（20次评分／40次提问／60次合计）、单分钟6次、单条2000字；结果缓存与长文截断；高阶模型单独计量；M2起建单用户日成本看板，超阈值先降额度再降模型，不停服</td></tr>
+  <tr><td>R3</td><td>词库为自建数据，无牛津等权威授权</td><td>高</td><td>确定</td><td>撤下已授权表述；释义与例句改为自建或使用允许商用的开源语料</td></tr>
+  <tr><td>R4</td><td>CC-CEDICT／Wiktionary的CC BY-SA 4.0署名义务未承载</td><td>中</td><td>确定</td><td>关于页新增开源许可区块，M1内完成</td></tr>
+  <tr><td>R5</td><td>无服务端：换机丢记录，付费无法校验</td><td>高</td><td>确定</td><td>M2引入轻量后端；M1先提供导出作为过渡</td></tr>
+  <tr><td>R6</td><td>口语评分依赖通用模型与录音转写，非专业语音评测</td><td>中</td><td>高</td><td>评分文案标注参考分并给出发音要点；M4评估接专业评测</td></tr>
+  <tr><td>R7</td><td>单人维护4.4万行代码，回归成本高</td><td>中</td><td>中</td><td>核心口径配置化、建立冒烟用例清单、每次发版跑统一校验脚本</td></tr>
+  <tr><td>R8</td><td>鸿蒙适配：RN生态支持有限</td><td>中</td><td>高</td><td>M4只做可行性验证，不承诺交付；必要时评估RNOH或重写关键页</td></tr>
+  <tr><td>R9</td><td>目标用户含中学生，涉及未成年人保护</td><td>高</td><td>中</td><td>不做诱导消费与公开排行，提供时长说明，M2落地监护人可见</td></tr>
+  <tr><td>R10</td><td>短期不上架，长期上架需资质与备案</td><td>中</td><td>中</td><td>提前准备软著、ICP／APP备案材料；生成式AI使用已备案模型</td></tr>
+</table>
+
+<h2 id="section-12-2"><span class="num" style="font-size:10.5pt">12.2</span> 合规待办</h2>
+<table>
+  <tr><th style="width:22%">事项</th><th style="width:22%">现状</th><th style="width:28%">要求</th><th>动作与优先级</th></tr>
+  <tr><td>开源许可署名</td><td>未承载</td><td>CC BY-SA 4.0要求署名、标明协议、衍生同协议</td><td>关于页许可区块；P0，M1</td></tr>
+  <tr><td>词库版权表述</td><td>界面标注已授权，与实际不符</td><td>不得虚假宣称授权</td><td>改为自建词库；P0，立即</td></tr>
+  <tr><td>生成式AI合规</td><td>直连第三方模型</td><td>面向境内公众提供服务需使用已备案模型或完成备案</td><td>优先选用已完成备案的模型；P0，M2</td></tr>
+  <tr><td>个人信息保护</td><td>政策齐备，缺注销链路</td><td>告知同意、最小必要、可删除可注销</td><td>补注销与导出校验；P0，M2</td></tr>
+  <tr><td>未成年人保护</td><td>政策有提示，无模式</td><td>限制时长与消费，内容适宜</td><td>提供使用时长说明与消费限制；P1，M2–M3</td></tr>
+  <tr><td>APP备案与软著</td><td>未办理</td><td>上架应用商店的前置条件</td><td>M3前完成材料准备；P1</td></tr>
+</table>
+<p class="note">短期不计划在国内应用商店上架，因此备案类事项按准备但不提交处理；一旦决定上架，R10与上表后两项需前置完成。</p>
+</section>
+
+<section class="chapter">
+<h1 id="section-13"><span class="num" style="font-size:14pt">13</span> 附录</h1>
+
+<h2 id="section-a"><span class="num" style="font-size:10.5pt">A</span> 现状功能清单（v0.10.0）</h2>
+<table>
+  <tr><th style="width:18%">模块</th><th style="width:44%">功能</th><th>说明</th></tr>
+  <tr><td>翻译</td><td>中英互译、语言三档、词典四选、前缀联想、分单词释义、逐句朗读</td><td>大模型整句优先，失败退内置词典</td></tr>
+  <tr><td>翻译</td><td>拍照翻译、语音翻译</td><td>原始图像与录音不上传</td></tr>
+  <tr><td>探索</td><td>AI对话查询、多轮上下文、历史会话、示例提问、建议追问、结果缓存</td><td>意图分查词／问答／答不上来</td></tr>
+  <tr><td>探索</td><td>随机词球、列表视图、数量15／30／45</td><td>球面拖拽跟手，背面剔除</td></tr>
+  <tr><td>课本</td><td>继续学习、收藏夹、热门、推荐</td><td>卡面色由词库色调决定</td></tr>
+  <tr><td>课本</td><td>词库详情、单词列表抽屉、上下词、进度条</td><td>位置按单词而非序号记忆</td></tr>
+  <tr><td>练习</td><td>打卡三环、门槛可调、专注计时器（计时／计数）</td><td>达标规则取任一</td></tr>
+  <tr><td>练习</td><td>五板块九题型、倍速四档、录音、就地评分、结算清单</td><td>六种题型走AI评分</td></tr>
+  <tr><td>练习</td><td>断点续做、题集、积累测验、综合测验</td><td>题集按收藏日期分区</td></tr>
+  <tr><td>趋势</td><td>四档时段、总览三指标、得分率趋势、板块条、分项目表</td><td>当日档不出趋势图</td></tr>
+  <tr><td>更多</td><td>个人资料、设置、学习统计、隐私政策、关于与更新记录</td><td>设置即时生效</td></tr>
+  <tr><td>基础设施</td><td>三语本地化、深浅色、辅助模式、配置中心、数据导出</td><td>文案键为中文原文</td></tr>
+</table>
+
+<h2 id="section-b"><span class="num" style="font-size:10.5pt">B</span> 关键配置项</h2>
+<table>
+  <tr><th style="width:24%">配置</th><th style="width:24%">当前值</th><th>作用</th></tr>
+  <tr><td>打卡门槛</td><td>5分钟 / 5个任务，任一</td><td>决定连续天数的达标判定</td></tr>
+  <tr><td>听写题量与重播</td><td>10题 / 至多3次</td><td>一组训练的默认长度</td></tr>
+  <tr><td>练习队列上限</td><td>30题</td><td>单场抽题上限</td></tr>
+  <tr><td>评分超时</td><td>软20秒 / 硬30秒</td><td>兜底提示与失败切换时点</td></tr>
+  <tr><td>AI回答超时</td><td>60秒</td><td>长内容生成单独放宽</td></tr>
+  <tr><td>上下文窗口</td><td>最近6条</td><td>多轮对话带入的历史长度</td></tr>
+  <tr><td>缓存上限</td><td>200条</td><td>词条解析结果本地缓存条数</td></tr>
+  <tr><td>会话保存</td><td>20段</td><td>历史面板可回翻的对话段数</td></tr>
+  <tr><td>趋势聚合</td><td>30天以上按周、60天以上按月</td><td>避免曲线点过密</td></tr>
+  <tr><td>收费标准</td><td>19.9元/月（首月9.9元）、199元/年</td><td>M3起由服务端下发，价格与首月优惠均为远程配置</td></tr>
+  <tr><td>免费AI额度</td><td>每日20次评分 ＋ 40次提问（合计60次）；单分钟6次</td><td>成本保护用，按自然日00:00重置，可远程调参</td></tr>
+  <tr><td>Pro AI额度</td><td>每日40次评分 ＋ 60次提问（合计100次）</td><td>高阶模型单价更高，额度需独立封顶</td></tr>
+</table>
+
+<h2 id="section-c"><span class="num" style="font-size:10.5pt">C</span> 待确认事项</h2>
+<table>
+  <tr><th style="width:36%">事项</th><th style="width:28%">当前默认</th><th>需谁确认</th></tr>
+  <tr><td>免费额度是否随连续打卡加成</td><td>暂不加成，统一为每日20评分／40提问</td><td>产品 + 数据（先看额度耗尽率与D7留存再定）</td></tr>
+  <tr><td>高阶模型具体型号与成本上限</td><td>先用快速模型，付费用户走高阶</td><td>技术 + 财务</td></tr>
+  <tr><td>口语评分是否接入专业评测</td><td>M4评估，当前标注参考分</td><td>产品 + 技术</td></tr>
+  <tr><td>鸿蒙是否作为交付目标</td><td>M4仅做可行性验证</td><td>产品（视用户来源数据定）</td></tr>
+  <tr><td>词库内容来源的最终方案</td><td>自建 + 开源语料，逐步替换</td><td>内容 + 法务</td></tr>
+</table>
+
+<h2 id="section-d"><span class="num" style="font-size:10.5pt">D</span> 调研来源说明</h2>
+<p>竞品数据来自各产品官网与应用商店公开页面（2026年10月检索），价格随地区、活动与渠道浮动，功能以公开宣传口径为准。本文档未做全量功能实测，横评中的评分为主观判断，判断依据已写入表格说明列。后续如需对外使用（投资人材料、竞品分析报告），应补充实测截图与版本号，避免以宣传口径替代实际体验。</p>
+</section>
+
+</body>
+</html>
