@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+
+import { askDialog } from '@/components/AppDialog';
 import Svg, { Rect } from 'react-native-svg';
 
 import {
@@ -118,17 +120,18 @@ export default function QrLoginScreen() {
             tone="danger"
             labelKind="md"
             onPress={() =>
-              Alert.alert(tr('注销账号'), tr('账号与全部学习记录都会被删除，且不可恢复。确定继续吗？'), [
-                { text: tr('取消'), style: 'cancel' },
-                {
-                  text: tr('注销'),
-                  style: 'destructive',
-                  onPress: () => {
-                    actions.resetLearningData();
-                    actions.signOut(false);
-                  },
-                },
-              ])
+              void askDialog({
+                title: tr('注销账号'),
+                message: tr('账号与全部学习记录都会被删除，且不可恢复。确定继续吗？'),
+                actions: [
+                  { id: 'cancel', label: tr('取消'), tone: 'cancel' },
+                  { id: 'delete', label: tr('注销'), tone: 'danger' },
+                ],
+              }).then((picked) => {
+                if (picked !== 'delete') return;
+                actions.resetLearningData();
+                actions.signOut(false);
+              })
             }
           />
           {state.profile.signedIn ? (
@@ -139,11 +142,18 @@ export default function QrLoginScreen() {
               panel
               labelKind="md"
               onPress={() =>
-                Alert.alert(tr('退出登录'), tr('请选择本地学习记录的处理方式。'), [
-                  { text: tr('取消'), style: 'cancel' },
-                  { text: tr('保留本地记录'), onPress: () => actions.signOut(true) },
-                  { text: tr('同时清空本地记录'), style: 'destructive', onPress: () => actions.signOut(false) },
-                ])
+                void askDialog({
+                  title: tr('退出登录'),
+                  message: tr('请选择本地学习记录的处理方式。'),
+                  actions: [
+                    { id: 'cancel', label: tr('取消'), tone: 'cancel' },
+                    { id: 'keep', label: tr('保留本地记录') },
+                    { id: 'purge', label: tr('同时清空本地记录'), tone: 'danger' },
+                  ],
+                }).then((picked) => {
+                  if (picked === 'keep') actions.signOut(true);
+                  if (picked === 'purge') actions.signOut(false);
+                })
               }
             />
           ) : (

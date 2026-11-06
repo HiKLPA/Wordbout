@@ -79,10 +79,25 @@ export async function initAnalytics(): Promise<void> {
 
 /** 冷启动：开一段会话，记下版本、平台与界面语言，便于按维度切分 */
 export function startSession(locale: string): void {
+  /* 采集关着（还没同意隐私政策）就不建会话：否则 sessionId 已占位，
+     开关打开后 `ensureSession` 会以为「已经有会话」，`app_open` 永远补不上 */
+  if (!enabled) return;
   sessionId = `s${Date.now().toString(36)}`;
   sessionStart = Date.now();
   activeSince = sessionStart;
   push(EVENT_NAMES.appOpen, { version: APP_VERSION, platform: Platform.OS, locale });
+}
+
+/**
+ * 补一段会话（已有会话时不动）。
+ *
+ * 冷启动发生在「用户还没同意隐私政策」的那一刻，那时采集开关是关的，
+ * `startSession` 里的 `app_open` 会被丢掉，导致首次使用那一段永远不计会话数
+ * （概览里「会话 0 / 平均会话 0s」而事件数不为 0）。开关打开时补一次即可。
+ */
+export function ensureSession(locale: string): void {
+  if (sessionId) return;
+  startSession(locale);
 }
 
 /** 切到后台：结算当前页面停留，记一段后台时长并立刻落盘 */

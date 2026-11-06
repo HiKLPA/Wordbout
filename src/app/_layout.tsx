@@ -6,6 +6,7 @@ import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { DialogHost } from '@/components/AppDialog';
 import { useAnalyticsRoot } from '@/lib/useAnalyticsRoot';
 import { useNotificationTap, useReminderSync } from '@/lib/useReminder';
 import { AppStoreProvider, useApp } from '@/store/AppStore';
@@ -69,6 +70,8 @@ function ThemedStack() {
         <Stack.Screen name="qr-login" />
       </Stack>
       <OnboardingGate />
+      {/* 全局确认 / 提示面板：web 上 Alert 是空实现，所有二次确认都走这里 */}
+      <DialogHost />
     </View>
   );
 }

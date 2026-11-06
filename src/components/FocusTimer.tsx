@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
 
+import { notifyUser } from '@/components/AppDialog';
 import { CounterIcon, PauseIcon, PlayIcon, RefreshIcon, StopwatchIcon } from '@/components/icons';
 import { AppText, Card } from '@/components/ui';
 import { appConfig } from '@/config/appConfig';
@@ -90,12 +91,10 @@ export function FocusTimer({ style }: { style?: StyleProp<ViewStyle> }) {
       setElapsed(0);
       setDone(0);
     };
-    Alert.alert(
+    void notifyUser(
       mode === 'time' ? tr('专注完成') : tr('任务完成'),
       mode === 'time' ? trf('已完成 {n} 分钟专注。', { n: minutes }) : trf('已完成 {n} 个任务。', { n: taskTarget }),
-      [{ text: tr('知道了'), onPress: reset }],
-      { cancelable: false, onDismiss: reset },
-    );
+    ).then(() => reset());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished]);
 

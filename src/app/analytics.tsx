@@ -1,6 +1,6 @@
 import * as Clipboard from 'expo-clipboard';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 
 import {
   AppText,
@@ -19,6 +19,7 @@ import {
   type AnalyticsSummary,
 } from '@/domain/analytics';
 import { tr, trf } from '@/i18n';
+import { askDialog, notifyUser } from '@/components/AppDialog';
 import { readAnalytics, clearAnalytics, trackTap, type AnalyticsSnapshot } from '@/lib/analytics';
 import { useTheme } from '@/theme/ThemeProvider';
 
@@ -53,25 +54,22 @@ export default function AnalyticsScreen() {
     trackTap('复制埋点数据');
     const json = JSON.stringify(snapshot?.events ?? [], null, 2);
     await Clipboard.setStringAsync(json);
-    Alert.alert(tr('已复制'), tr('埋点数据已复制到剪贴板，可直接粘贴到表格或文档里。'));
+    // 网页版没有系统弹窗，提示统一走 App 内面板
+    void notifyUser(tr('已复制'), tr('埋点数据已复制到剪贴板，可直接粘贴到表格或文档里。'));
   };
 
   const confirmClear = () => {
     trackTap('清空埋点数据');
-    Alert.alert(
-      tr('清空数据统计'),
-      tr('清空后不可恢复，学习记录与收藏不受影响。'),
-      [
-        { text: tr('取消'), style: 'cancel' },
-        {
-          text: tr('清空'),
-          style: 'destructive',
-          onPress: () => {
-            void clearAnalytics().then(reload);
-          },
-        },
+    void askDialog({
+      title: tr('清空数据统计'),
+      message: tr('清空后不可恢复，学习记录与收藏不受影响。'),
+      actions: [
+        { id: 'cancel', label: tr('取消'), tone: 'cancel' },
+        { id: 'clear', label: tr('清空'), tone: 'danger' },
       ],
-    );
+    }).then((picked) => {
+      if (picked === 'clear') void clearAnalytics().then(reload);
+    });
   };
 
   const empty = !snapshot || snapshot.events.length === 0;

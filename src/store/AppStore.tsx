@@ -34,7 +34,7 @@ import type {
   WritingBookEntry,
 } from '@/domain/types';
 import { track } from '@/lib/analytics';
-import { STORAGE_KEYS, loadJSON, removeJSON, saveJSON } from '@/lib/storage';
+import { STORAGE_KEYS, loadJSON, saveJSON } from '@/lib/storage';
 import { DEFAULT_FOLDER_COLOR, type FolderColor } from '@/theme/tokens';
 
 const STATE_VERSION = 1;
@@ -234,12 +234,27 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     (async () => {
       const stored = await loadJSON<PersistedState>(STORAGE_KEYS.state);
-      if (stored && stored.version === STATE_VERSION) {
-        const normalized = normalizeState(stored);
-        setState({ ...initialState(), ...normalized, settings: { ...defaultSettings(), ...normalized.settings } });
-      } else {
-        // 首次启动：清理历史版本键
-        await removeJSON(STORAGE_KEYS.state);
+      if (stored && typeof stored === 'object' && !Array.isArray(stored)) {
+        /**
+         * 迁移：**不按版本整盘丢弃**。老数据（或字段缺失的数据）里能认的字段照用，
+         * 认不出的补默认值，再把版本号盖成当前的 —— 否则每升一次 `STATE_VERSION`
+         * 用户的练习记录、连续天数、收藏就会全部清零，这是最不可接受的丢数据方式。
+         */
+        const normalized = normalizeState({ ...initialState(), ...stored });
+        const base = initialState();
+        setState({
+          ...base,
+          ...normalized,
+          version: STATE_VERSION,
+          attempts: Array.isArray(normalized.attempts) ? normalized.attempts : [],
+          daily: normalized.daily && typeof normalized.daily === 'object' ? normalized.daily : {},
+          makeups: normalized.makeups ?? {},
+          favorites: normalized.favorites,
+          savedItems: normalized.savedItems,
+          lastPractice: normalized.lastPractice ?? null,
+          profile: { ...base.profile, ...(stored.profile ?? {}) },
+          settings: { ...defaultSettings(), ...(stored.settings ?? {}) },
+        });
       }
       setReady(true);
     })();

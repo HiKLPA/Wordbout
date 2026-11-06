@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   Pressable,
   ScrollView,
   TextInput,
@@ -25,6 +24,7 @@ import {
   PronunciationRow,
   SenseRows,
 } from '@/components/DictEntryBlock';
+import { askDialog } from '@/components/AppDialog';
 import { AiAnswerView } from '@/components/AiAnswer';
 import { AiHistoryPanel } from '@/components/AiHistoryPanel';
 import { EmphasisText } from '@/components/EmphasisText';
@@ -679,14 +679,16 @@ export default function ExploreScreen() {
 
   /** 长按一条消息 → 确认后删掉**这一条**（问题与回答各算一条，删哪条由长按的那条决定） */
   const confirmRemove = (message: AiMessage) => {
-    Alert.alert(tr('删除这条消息？'), tr('删除后无法恢复。'), [
-      { text: tr('取消'), style: 'cancel' },
-      {
-        text: tr('删除'),
-        style: 'destructive',
-        onPress: () => setMessages((prev) => prev.filter((m) => m.id !== message.id)),
-      },
-    ]);
+    void askDialog({
+      title: tr('删除这条消息？'),
+      message: tr('删除后无法恢复。'),
+      actions: [
+        { id: 'cancel', label: tr('取消'), tone: 'cancel' },
+        { id: 'delete', label: tr('删除'), tone: 'danger' },
+      ],
+    }).then((picked) => {
+      if (picked === 'delete') setMessages((prev) => prev.filter((m) => m.id !== message.id));
+    });
   };
 
   /**

@@ -1280,7 +1280,11 @@ export function PageHeader({
       <View style={{ flexShrink: 1, gap: 2 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
           <Pressable
-            onPress={() => router.back()}
+            onPress={() => {
+              // 深链接直达二级页时没有上一页可回：兜底到主页，别让用户卡在这一层
+              if (router.canGoBack()) router.back();
+              else router.replace('/');
+            }}
             accessibilityRole="button"
             accessibilityLabel={tr('返回')}
             hitSlop={8}

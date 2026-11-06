@@ -50,12 +50,14 @@ function isMeaningless(text: string): boolean {
 }
 
 /**
- * 拼写判定的词单元切分：标点（连字符、撇号等）一律去掉、空白压缩成单空格、忽略首尾空格。
- * `abandon ship` → ['abandon', 'ship']；`well-known` → ['wellknown']。
+ * 拼写判定的词单元切分：撇号属于拼写本身，连字符等其余标点去掉、空白压缩成单空格、忽略首尾空格。
+ * `abandon ship` → ['abandon', 'ship']；`well-known` → ['wellknown']；`don't` → ["don't"]。
+ * 撇号必须留着，否则 `dont` 会被判成 `don't`（拼写题上这是两个答案）。
  */
 function spellingUnits(text: string): string[] {
   return text
-    .replace(/[^A-Za-z0-9\s]/g, '')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[^A-Za-z0-9'\s]/g, '')
     .trim()
     .split(/\s+/)
     .filter(Boolean);
@@ -258,20 +260,37 @@ export interface GradeOptions {
   latencyMs?: number;
 }
 
+/** 模拟远端往返：正式版这里是真实的评分接口 */
+const DEFAULT_GRADING_LATENCY_MS = 1400;
+
+/**
+ * 客观题（选择题、听写）的判分不依赖模型：答案对错在本地就能判死，
+ * 所以不该陪着主观题一起等模拟网络延迟（实测白等 1.9s）。
+ */
+export function isLocallyDecidable(item: ExerciseItem): boolean {
+  return item.answerIndex !== undefined || Boolean(item.dictationAnswer);
+}
+
 /**
  * 提交评分：20s 提示「正在评分」并保留页面；30s 或报错转「评分失败，请稍后重试」（FR-E-15）。
  * 返回 null 表示评分失败，调用方必须保留草稿。
+ *
+ * 客观题同步出分（不发 `grading` 阶段，按钮不转圈）；显式传 `latencyMs` 时按传入值走，
+ * 这条留给「模拟网络/超时」的测试。
  */
 export async function requestGrading(opts: GradeOptions): Promise<GradingResult | null> {
   const { softTimeoutMs, hardTimeoutMs } = appConfig.grading;
-  const latency = opts.latencyMs ?? 1400;
+  const instant = opts.latencyMs === undefined && isLocallyDecidable(opts.item);
+  const latency = opts.latencyMs ?? (instant ? 0 : DEFAULT_GRADING_LATENCY_MS);
   const started = Date.now();
 
-  opts.onFeedback?.({ phase: 'grading', message: '正在评分…' });
+  if (!instant) opts.onFeedback?.({ phase: 'grading', message: '正在评分…' });
 
-  const softTimer = setTimeout(() => {
-    opts.onFeedback?.({ phase: 'soft-pending', message: '正在评分，请勿离开本页，草稿已保留' });
-  }, Math.min(softTimeoutMs, Math.max(0, latency)));
+  const softTimer = instant
+    ? null
+    : setTimeout(() => {
+        opts.onFeedback?.({ phase: 'soft-pending', message: '正在评分，请勿离开本页，草稿已保留' });
+      }, Math.min(softTimeoutMs, Math.max(0, latency)));
 
   try {
     await new Promise((resolve, reject) => {
@@ -284,14 +303,14 @@ export async function requestGrading(opts: GradeOptions): Promise<GradingResult 
         reject(new Error('TIMEOUT'));
       }, hardTimeoutMs);
     });
-    clearTimeout(softTimer);
+    if (softTimer) clearTimeout(softTimer);
     const elapsed = Date.now() - started;
     if (elapsed > hardTimeoutMs) throw new Error('TIMEOUT');
     const result = localGrade(opts.item, opts.def, opts.answer, opts.seconds);
     opts.onFeedback?.({ phase: 'succeeded', message: '评分完成' });
     return result;
   } catch {
-    clearTimeout(softTimer);
+    if (softTimer) clearTimeout(softTimer);
     opts.onFeedback?.({ phase: 'failed', message: FRIENDLY_ERROR });
     return null;
   }

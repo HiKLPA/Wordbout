@@ -1,9 +1,10 @@
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Alert, Linking, View } from 'react-native';
+import { Linking, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Speech from 'expo-speech';
 
+import { askDialog } from '@/components/AppDialog';
 import {
   AppText,
   Card,
@@ -62,14 +63,16 @@ export default function ScanScreen() {
         ? await ImagePicker.requestCameraPermissionsAsync()
         : await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!perm.granted) {
-      Alert.alert(
-        from === 'camera' ? '需要相机权限' : '需要相册权限',
-        '拍照翻译需要在使用时授权。你可以在系统设置中开启，授权只在使用期间生效，不会驻留。',
-        [
-          { text: '稍后再说', style: 'cancel' },
-          { text: '去设置', onPress: () => Linking.openSettings() },
+      void askDialog({
+        title: from === 'camera' ? '需要相机权限' : '需要相册权限',
+        message: '拍照翻译需要在使用时授权。你可以在系统设置中开启，授权只在使用期间生效，不会驻留。',
+        actions: [
+          { id: 'later', label: '稍后再说', tone: 'cancel' },
+          { id: 'settings', label: '去设置' },
         ],
-      );
+      }).then((picked) => {
+        if (picked === 'settings') void Linking.openSettings();
+      });
       return;
     }
     const res =

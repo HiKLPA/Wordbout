@@ -4,6 +4,7 @@ import { AppState } from 'react-native';
 
 import {
   endSession,
+  ensureSession,
   initAnalytics,
   resumeSession,
   screenLabelOf,
@@ -34,9 +35,15 @@ export function useAnalyticsRoot(): void {
   pathRef.current = pathname;
   localeRef.current = locale;
 
-  // 开关：未同意隐私政策时一律不采（与相机 / 麦克风的门槛同一口径，NFR-5）
+  /**
+   * 开关：未同意隐私政策时一律不采（与相机 / 麦克风的门槛同一口径，NFR-5）。
+   * 打开时补一段会话 —— 冷启动那一刻开关还是关的，`app_open` 已经被丢掉，
+   * 不补的话概览里「会话数 / 平均会话」会一直是 0。
+   */
   useEffect(() => {
-    setAnalyticsEnabled(analyticsEnabled && privacyAccepted);
+    const on = analyticsEnabled && privacyAccepted;
+    setAnalyticsEnabled(on);
+    if (on) ensureSession(localeRef.current);
   }, [analyticsEnabled, privacyAccepted]);
 
   // 冷启动：读回上次队列 → 开一段会话；退出时结算最后一段停留

@@ -72,12 +72,14 @@ export function computeStreak(args: {
 }): { streak: number; todayQualified: boolean } {
   const { daily, makeups, thresholds, today } = args;
   const signed = (k: string) => daySigned(daily, makeups, thresholds, k);
-  const qualifiedToday = signed(today) || Boolean(args.todayQualified);
+  /* 今日的「已签到」要把进行中的会话算进去：`daily` 只在提交作答时才落库，实时状态靠入参补 */
+  const signedToday = signed(today) || Boolean(args.todayQualified);
+  const qualifiedToday = signedToday;
 
   let count = 0;
   let cur = qualifiedToday ? today : addDays(today, -1);
   let guard = 0;
-  while (signed(cur) && guard < 3650) {
+  while ((cur === today ? signedToday : signed(cur)) && guard < 3650) {
     count += 1;
     cur = addDays(cur, -1);
     guard += 1;

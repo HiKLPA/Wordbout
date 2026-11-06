@@ -297,7 +297,8 @@ export function recomputeDaily(
   thresholds: { timeThresholdMin: number; taskThreshold: number },
 ): Record<string, DailyStat> {
   const out: Record<string, DailyStat> = {};
-  const done = attempts.filter((a) => a.status === 'succeeded');
+  /* 测验（excluded）与失败记录不进三计数器 —— 与 finishAttempt 的增量口径一致，否则删一条作答重算就会把它们算进来 */
+  const done = attempts.filter((a) => a.status === 'succeeded' && !a.excluded);
   done.forEach((a) => {
     const key = dateKey(new Date(a.finishedAt));
     const day = out[key] ?? emptyDaily(key);

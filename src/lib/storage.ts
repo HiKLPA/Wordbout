@@ -7,12 +7,26 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEY_PREFIX = 'wordbout:v1:';
 
+/**
+ * 读一份 JSON。解析失败时**不静默丢数据**：把原始字符串另存到 `<key>:corrupt`，
+ * 再按「没有数据」返回（界面回落到首次启动，不会崩，也留了一次人工捞回的机会）。
+ */
 export async function loadJSON<T>(key: string): Promise<T | null> {
+  let raw: string | null = null;
   try {
-    const raw = await AsyncStorage.getItem(KEY_PREFIX + key);
-    if (!raw) return null;
+    raw = await AsyncStorage.getItem(KEY_PREFIX + key);
+  } catch {
+    return null;
+  }
+  if (!raw) return null;
+  try {
     return JSON.parse(raw) as T;
   } catch {
+    try {
+      await AsyncStorage.setItem(KEY_PREFIX + key + ':corrupt', raw);
+    } catch {
+      // 备份也失败就没什么可做的了，别把启动带崩
+    }
     return null;
   }
 }

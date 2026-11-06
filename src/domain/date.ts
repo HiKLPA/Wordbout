@@ -55,10 +55,12 @@ export function formatTime(seconds: number): string {
 export function formatDurationHuman(seconds: number): string {
   const s = Math.max(0, Math.round(seconds));
   if (s < 60) return trf('{v} 秒', { v: s });
-  const h = Math.floor(s / 3600);
-  const m = Math.round((s % 3600) / 60);
-  if (h > 0) return m > 0 ? trf('{h} 小时 {m} 分', { h, m }) : trf('{h} 小时', { h });
-  return trf('{m} 分', { m });
+  /* 先合到总分钟再拆时 / 分：分别四舍五入会出现「60 分」「1 小时 60 分」这种进位失败 */
+  const totalMin = Math.round(s / 60);
+  if (totalMin < 60) return trf('{m} 分', { m: totalMin });
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  return m > 0 ? trf('{h} 小时 {m} 分', { h, m }) : trf('{h} 小时', { h });
 }
 
 /** 简短日期：M月D日（英文为 M/D） */

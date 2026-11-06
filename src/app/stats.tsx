@@ -1,8 +1,9 @@
 import { useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 
+import { askDialog, notifyUser } from '@/components/AppDialog';
 import { TrendChart } from '@/components/TrendChart';
 import { AppText, Card, Divider, EmptyState, OptionChips, PageHeader, PrimaryButton, Screen, SectionTitle } from '@/components/ui';
 import { exerciseTypeMap, exerciseTypes, type ExerciseTypeId } from '@/config/appConfig';
@@ -59,26 +60,26 @@ export default function StatsScreen() {
     const text = actions.exportData(exportFormat);
     setExported(text);
     await Clipboard.setStringAsync(text);
-    Alert.alert(tr('已生成并复制到剪贴板'), trf('格式：{fmt}，共 {n} 行。可直接粘贴到任何文本工具中保存。', { fmt: exportFormat.toUpperCase(), n: text.split('\n').length }));
+    void notifyUser(
+      tr('已生成并复制到剪贴板'),
+      trf('格式：{fmt}，共 {n} 行。可直接粘贴到任何文本工具中保存。', { fmt: exportFormat.toUpperCase(), n: text.split('\n').length }),
+    );
   };
 
   const confirmDelete = () => {
-    Alert.alert(
-      tr('删除全部学习记录'),
-      '删除后不可恢复：练习记录、连续天数、能力趋势统计与写作本都会被清空，且不再参与词库排行统计。',
-      [
-        { text: '取消', style: 'cancel' },
-        {
-          text: '删除',
-          style: 'destructive',
-          onPress: () => {
-            actions.resetLearningData();
-            setExported(null);
-            Alert.alert(tr('已删除'), tr('全部学习记录已清空，练习页计数器与查询表已回到空数据态。'));
-          },
-        },
+    void askDialog({
+      title: tr('删除全部学习记录'),
+      message: tr('删除后不可恢复：练习记录、连续天数、能力趋势统计与写作本都会被清空，且不再参与词库排行统计。'),
+      actions: [
+        { id: 'cancel', label: tr('取消'), tone: 'cancel' },
+        { id: 'delete', label: tr('删除'), tone: 'danger' },
       ],
-    );
+    }).then((picked) => {
+      if (picked !== 'delete') return;
+      actions.resetLearningData();
+      setExported(null);
+      void notifyUser(tr('已删除'), tr('全部学习记录已清空，练习页计数器与查询表已回到空数据态。'));
+    });
   };
 
   return (

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Alert, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
 
+import { notifyUser } from '@/components/AppDialog';
 import { AppText, Card, Divider, PageHeader, PrimaryButton, Screen, SectionTitle } from '@/components/ui';
 import { levels } from '@/config/appConfig';
 import { tr, trf } from '@/i18n';
@@ -28,7 +29,7 @@ export default function ProfileScreen() {
   const pickAvatar = async () => {
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!perm.granted) {
-      Alert.alert(tr('需要相册权限'), tr('请在系统设置中允许 Wordbout 访问相册，用于选择头像。'));
+      void notifyUser(tr('需要相册权限'), tr('请在系统设置中允许 Wordbout 访问相册，用于选择头像。'));
       return;
     }
     const res = await ImagePicker.launchImageLibraryAsync({
@@ -123,7 +124,7 @@ export default function ProfileScreen() {
                 tone="ghost"
                 onPress={async () => {
                   await Clipboard.setStringAsync(state.profile.id);
-                  Alert.alert(tr('已复制'), state.profile.id);
+                  void notifyUser(tr('已复制'), state.profile.id);
                 }}
                 style={{ minHeight: 34, paddingHorizontal: 14 }}
               />

@@ -543,6 +543,12 @@ export default function PracticeScreen() {
   const startSeconds = useRef(0);
   /** 测验不走全局计时器（不计入卡片），改用进入作答的时间戳记录真实用时 */
   const quizStartedAt = useRef(Date.now());
+  /**
+   * 提交互斥锁：客观题现在同步出分，按钮在同一帧内就恢复可点，
+   * 连点会真的下两次 `startAttempt`（多一条作答、任务数 +2）。
+   * 状态更新是异步的，`disabled` 挡不住同一帧里的第二次点击，所以用 ref 兜。
+   */
+  const submitLock = useRef(false);
 
   /**
    * 只统计作答时间（FR-E-2）：进入作答步骤才起表，评分返回（本轮作答结束）即停表结算，
@@ -761,7 +767,7 @@ export default function PracticeScreen() {
 
   const composedAnswer = item?.answerIndex !== undefined ? String(selectedChoice ?? '') : answer;
 
-  const submit = async () => {
+  const doSubmit = async () => {
     if (!item) return;
     // 练习的用时取自全局计时器增量；测验没有计时器，按进入本页到提交的实际秒数记录
     const durationSec = isQuiz
@@ -826,6 +832,17 @@ export default function PracticeScreen() {
       actions.finishAttempt(id, null, null);
     }
     /* 评分返回后**不换屏**：留在作答页就地展开对错与解析（全题型同一口径，见 inlineGraded） */
+  };
+
+  /** 对外暴露的提交入口：加锁后再跑，连点只算一次 */
+  const submit = async () => {
+    if (submitLock.current) return;
+    submitLock.current = true;
+    try {
+      await doSubmit();
+    } finally {
+      submitLock.current = false;
+    }
   };
 
   /** 下一题：还有题就挪指针、清掉上一题的作答与评分状态；最后一题答完则进结算页 */

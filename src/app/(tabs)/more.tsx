@@ -2,8 +2,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 
-import { Alert, Image, Modal, Pressable, TextInput, View } from 'react-native';
+import { Image, Modal, Pressable, TextInput, View } from 'react-native';
 
+import { notifyUser } from '@/components/AppDialog';
 import { AboutIcon, HintIcon, Logo, PrivacyIcon, ScanIcon, SettingsIcon } from '@/components/icons';
 import { AppText, Card, PrimaryButton, Screen } from '@/components/ui';
 import { tr } from '@/i18n';
@@ -53,7 +54,7 @@ export default function MoreScreen() {
   const pickAvatar = async () => {
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!perm.granted) {
-      Alert.alert(
+      void notifyUser(
         tr('需要相册权限'),
         tr('请在系统设置中允许 Wordbout 访问相册，用于选择头像。'),
       );
